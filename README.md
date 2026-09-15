@@ -11,7 +11,9 @@ find in docs/en/documentation.txt
 find in src/gcmt+-.c
 
 ## example
+```cmm
 fn main() {
-say!("Hello, World!")
+say!("Hello, world!")
 }
+```
 
