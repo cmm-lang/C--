@@ -1,0 +1,2066 @@
+C-- OFFICIAL DOCUMENTATION 🐺
+================================================================================
+
+Version: 1.0
+Author: Andrey
+Philosophy: C On Steroids
+Standard Library: BUILT-IN TRANSLATOR!!!
+Mascot: Wolf
+================================================================================
+0. DATA TYPES
+================================================================================
+
+char - 1 character, written with " (for example: 'A', '9', '#')
+string[buf] - many characters. You need to specify the buffer size, as in C.
+However, you can create a Dynamic string:
+var str[] = "text"
+it can be changed by index
+ The string can be changed by index: str[1] = 'A '(replaces the second character)
+int - an integer (for example: 10, -5, 0)
+float - a floating-point number (for example: 3.14, -2.5)
+bool-boolean value (true or false)
+null - an empty value
+
+Examples:
+    const letter = 'A'                // char
+ const name[10]: string = "Andrey"         // string with buffer 10
+ name[0] = 'B' / / now "Vndrey"
+    const age = 10                    // int
+    const pi = 3.14159                // float
+    const flag = true                 // boolean
+// you can compare a string by index:
+if (name[0] == 'In') {
+say!("first letter: B")
+}
+
+================================================================================
+1. VARIABLES
+================================================================================
+
+const name / const name = null - an empty variable (Null Variable)
+const name: type / const name: type = null-an empty variable with the type
+const name = value-an immutable variable
+const name: type = value-an immutable variable with the type
+var name / var name = null - empty mutable variable
+var name: type / var name: type = null - empty mutable variable with the type
+var name = value-variable to change
+var name: type = value-mutable variable with the type
+name = assignment value
+
+List of types:
+char, string, int, float, bool
+Arrays:
+[char], [string], [int], [float], [bool]
+Structs and enum:
+name, [name]
+Special offers:
+void*, [void*], null, [null]
+
+Examples of all types:
+const x: char = 'H'
+const y[500]: string = "Hello"
+const z: int = 42
+const pi: float = 3.14
+const flag: bool = true
+const xm[2]: [char] = ['H', 'h']
+const ym[3]: [string] = ["HELLO", "Hello", "hello"]
+const zm[2]: [int] = [42, 42]
+const pim[2]: [float] = [3.14, 3.15]
+const flagm[2]: [bool] = [true, false]
+const user: User = User{"Andrey", 10, true}
+const users[2]: [User] = [User{"Andrey", 11, false}, User{"Andrey", 10, true}]
+const color: Color = Color.red
+const colors[2]: [Color] = [Color.red, Color.blue]
+const X: void* = 42
+const Void[3]: [void*] = [42, "Hello", 3.14]
+const Null[500]: string = null
+const Nulls[2]: [string] = [null, null]
+Nulls[0] = "Hello, "
+Nulls[1] = "World!"
+say!(Nulls[0], Nulls[1])
+When:
+const xm[5]: [char] = ['H', 'h']
+Uninitialized elements will contain garbage
+================================================================================
+2. WORKING WITH STRINGS
+================================================================================
+/ / Basic functions
+strlen(text)
+- returns the size of the string in bytes (without \0)
+- for ASCII: 5 characters = 5 bytes
+- for UTF-8: Russian letter = 2 bytes, emoji = 3-6 bytes
+(returns: number of characters (int))
+
+strupper(text)
+- converts a string to uppercase (returns: string in uppercase)
+
+strlower(text)
+- converts a string to lowercase (returns: a string in the lowercase format)
+
+strtrim(text)
+- removes spaces at the edges
+(returns: string)
+================================================================================
+3. INPUT / OUTPUT
+================================================================================
+
+say ("text")                    - output WITHOUT line break
+(returns: number of characters output)
+say!("text")                   - line break output
+(returns: number of characters output)
+say(expr1, expr2,...) - output multiple expressions
+say!(expr1, expr2,...) - output multiple expressions with hyphenation
+fatal ("message")          - 
+line output and program termination
+
+
+input(var, type)                 - input with type checking
+(returns: 0: the type is invalid, 1: everything is fine)
+press () - waits for pressing Enter
+(returns: void)
+cls () - clears the screen
+(returns: void)
+
+Types for input: string, char, int, float, bool
+
+Examples:
+    var name
+ input(name, string) // Entering a string
+    
+    var age
+   if (input(age, int) != 1) {
+fatal ("error: you need to enter a number")
+}
+/ / If an error occurs, the variable remains with the old value
+
+
+ / / Multiple Output (Concatenation)
+const name = "Artem"
+const age = 10
+say!("Hello """name, ""You, ""age, "years")
+/ / Hello, Artem, you are 10 years old
+say!("Andrey, ", true, 1, 3.14, user.name)
+// Any Type
+const greet = " Hello,", name
+say!(greet)
+// in variables!!!
+say!(age + 1) // 11
+// arithmetic
+say!((age) + (age))
+// 20!
+/ / YOU NEED TO WRITE SEPARATED BY COMMAS DON'T GET CONFUSED!!!
+================================================================================
+4. TIME AND PAUSES
+================================================================================
+
+ssleep(сек)                     - pause in seconds
+(returns: how many seconds it waited)
+msleep (ms) - pause in milliseconds
+(returns: how many ms waited)
+
+Example:
+    say!("Pause 2 seconds")
+    ssleep(2)
+    say!("Pause 500 milliseconds")
+    msleep(500)
+
+================================================================================
+5. WORKING WITH FILES
+================================================================================
+
+create_file("file.txt") {- create a file and record it
+    fsay!("text")
+    fsay!(variable)
+}
+(returns: 0: no file created, 1: everything is fine)
+
+append_file("file.txt") {- add to end of file
+    fsay!("text")
+}
+(returns 0: error, 1: everything is fine)
+
+write_file("file.txt") { - overwrite the file
+    fsay!("new text")
+}
+(returns: 0: error, 1: everything is fine)
+
+const content = read_file ("file.txt") - read the entire file
+(returns: = = null: error,! = null: everything is fine)
+
+if (!file_exists("file.txt")) {                - checking the file's existence
+ // there is no file
+}
+(returns: bool, true found false not found)
+
+How do I pass files to functions?:
+fn add_to_file(file: string, msg: string) {
+append_file(file) {
+fsay!(msg)
+}
+ }
+
+fn main() {
+create_file("file") {
+
+}
+""add_to_file" ("file","running")
+}
+
+⚠️ IMPORTANT: Always check the result for error (0)!
+
+Example:
+ / / Creating and Recording
+    const err = create_file("notes.txt") {
+        fsay!("My notes")
+        fsay!("To-do list:")
+        fsay!("1. Make C--")
+        fsay!("2. Learn C")
+    }
+    
+ // Error checking
+    if (err == 0) {
+ fatal ("File creation error!")
+    }
+    
+ / / Checking for existence
+    if (!file_exists("notes.txt")) {
+ fatal ("File not found!")
+    }
+    
+ // Reading
+    const content = read_file("notes.txt")
+    if (content == null) {
+ fatal ("Read error!")
+    }
+    say!("Content:", content)
+    
+ / / Adding to the end
+    append_file("notes.txt") {
+        fsay!("\n3. Make a compiler")
+        fsay!("4. Push to GitHub")
+    }
+    
+ // Overwriting
+    write_file("notes.txt") {
+        fsay!("NEW LIST:")
+        fsay!("1. C-- 1.0")
+        fsay!("2. C-- 1.1")
+    }
+
+================================================================================
+6. ARITHMETIC AND COMPARISON
+================================================================================
+
+Arithmetic operators:
+ + - addition (5 + 3 → 8)
+ - - subtraction (5-3 → 2)
+ * - multiplication (5 * 3 → 15)
+ / - division (6 / 3 → 2)
+ % - remaining balance (10 % 3 → 1)
+ ++ - increment       (x++ → x + 1) // only for var
+ -- - decrement       (x-- → x-1) / / only for var
+
+Priorets:
+()- parentheses ((5 + 5) * (5 + 5) = 100)
+
+Comparison operators:
+ = = - equal to (5 == 5 → true)
+    != - not equal to (5 != 3 → true)
+ > - more (5 > 3 → true)
+ < - less than          (5 < 3 → false)
+ > = - greater than or equal to (5 >= 5 → true)
+ < = - less than or equal to (5 <= 3 → false)
+
+Logical operators:
+ && - And (true && false → false)
+ || - OR (true | / false → true)
+    !    - NOT (!true → false)
+
+Example:
+    var counter = 0
+    counter++
+    say!(counter)   // 1
+
+================================================================================
+7. TERMS AND CONDITIONS
+================================================================================
+
+if (condition) { }
+else if (condition) { }
+else { }
+
+Example:
+    var age = 18
+    if (age >= 18) {
+        say!("Adult")
+    } else if (age >= 13) {
+        say!("Teenager")
+    } else {
+        say!("Child")
+    }
+
+================================================================================
+8. CYCLES
+================================================================================
+
+while (condition) { }
+while (true) { }
+break
+continue
+
+for (var i = start, i < end, i++) { }
+
+Examples:
+ // while loop
+    var i = 0
+    while (i < 5) {
+        say!(i)
+        i++
+    }
+    
+ / / Infinite loop with break
+    while (true) {
+ if (condition) {
+            break
+        }
+    }
+    
+ // for loop
+    for (var i = 0, i < 10, i++) {
+        say!(i)
+    }
+    
+ // for with decrement
+    for (var i = 10, i > 0, i--) {
+        say!(i)
+    }
+
+================================================================================
+9. ARRAYS
+================================================================================
+
+const arr[size] = [a, b, c] - immutable array
+var arr[size] = [a, b] - mutable array
+arr[index]                      - access to the element (from 0)
+arrlen(arr)                             -
+array size
+
+Индексы Indexes are counted from 0: the first element is index 0, the second is index 1.
+
+Example:
+    var arr[5] = [10, 20, 30]
+    say!(arr[0])                // 10
+    say!(arr[2])                // 30
+ arr[3] = 40 / / initialized element 4
+    say!(arr[4]) / / garbage! 5 the element is not initialized
+    say!(arr[3])                // 40
+
+================================================================================
+10. FUNCTIONS
+================================================================================
+
+fn name(params: type) -> returning type { } - function declaration
+return value - returns the value
+name(args)                      - calling the function
+
+Example:
+    fn add(x: int, y: int) -> int {
+        return x + y
+    }
+    
+    fn main() {
+        const sum = add(4, 4)
+        say!(sum)  // 8
+    }
+
+Important:
+- you can pass void*to arguments
+fn foo(x: void*) -> void*
+So the type can be any
+functions must be passed to arguments with the fn type:
+fn function() -> void {
+say!("Hello")
+}
+
+fn foo(x: fn() -> void) -> void {
+x()
+}
+
+fn main() {
+foo(function)
+}
+If there are arguments, then you need to write arguments for example:
+fn add(x: int, y: int) {
+return x + y
+}
+
+fn foo(x: fn(int, int), y: int, z: int) {
+return x(y, z)
+}
+
+fn main() {
+foo(add, 10, 10) // 20
+}
+Challenging tasks:
+fn foo(callback: fn(int) -> int) {
+ // Here callback is a function
+ // We call it with the argument
+    const result = callback(42)
+    say!(result)
+}
+
+fn double(x: int) -> int {
+    return x * 2
+}
+
+fn main() {
+ / / ✅ Correct: passing the function without calling it
+ foo(double) / / double without parentheses!
+    
+ / / ❌ Incorrect: passing the call result
+ foo(double(5)) / / Error! double(5) is an int, not fn
+}
+
+Recursion is also allowed:
+fn foo() {
+say!("Hello")
+for (var i = 0, i < 5, i++) {
+foo()
+}
+ }
+fn main() {
+foo()
+}
+Conclusion: Hello very many times (Stack overflow) is necessary in a loop in main:
+fn main() {
+for (var i = 0, i < 5, i++) {
+foo()
+}
+ }
+Hello is displayed ~ 25 times
+================================================================================
+11. COMMENTS
+================================================================================
+
+/ / text - one-line comment (C)
+
+/*
+* text
+* text
+*/                                - 
+multi-line comment (C)
+================================================================================
+12. C INSERT
+================================================================================
+
+Allows you to write clean C code right inside C--.
+
+C {
+ // you don't need to write any code in C main
+}
+
+Example:
+    fn main() {
+ const name = "Andrey"
+        const age = 10
+        
+        C {
+            #include <stdio.h>
+            printf("%s, %d", name, age);
+}
+        }
+    }
+
+Warning: If the entire program code is C++, the Wolf is offended.
+================================================================================
+13. Runtime Error
+================================================================================
+Format:
+line: string, symbol: symbol RUNTIME FAULT Signal n (SIGxxx):
+line
+^ ^ ^ pointer to a string
+REASON: the reason
+
+Runtime Fault — critical error system in C-- (analogous to Segment Fault in C). They are calculated in runtime.
+
+Signal 1 (SIGDIV) - Division by zero
+Signal 2 (SIGTYPE) - invalid types for example: const c: char = "wrong"
+Signal 3 (SIGSTACK) - Stack Overflow
+
+Example of Signal 1 occurrence:
+const temp = 10 / 0
+Error:
+line: 1, symbol: 12 RUNTIME FAULT Signal 1 (SIGDIV):
+let temp = 10 / 0
+            ^^^
+REASON: Division by zero
+
+Example of Signal 3 occurrence:
+const arr[1000000] = [1, 2, 3]  // too big for stack
+line: 1, symbol: 8 RUNTIME FAULT Signal 3 (SIGSTACK):
+const arr[1000000] = [1, 2, 3] // too
+        ^^^
+REASON: too big for stack
+================================================================================
+14. PANIC FAULT (panic error)
+================================================================================
+Format:
+line: string, symbol: symbol PANIC FAULT Signal n (SIGxxx):
+line
+^ ^ ^ pointer to a string
+REASON: the reason
+
+System of the most fatal errors. they are calculated at compile time.
+
+In Development...
+================================================================================
+15. UNIQUE C -- CHIPS
+================================================================================
+1. Null Variable
+ A variable can exist without a value.
+   
+   const name = null                   // Null Variable
+ input(name, string) / / now name = "Andrey"
+================================================================================
+16. Compiler: GCMT
+================================================================================
+Full Name: GNU C-- Translator
+
+Installation:
+pkg install gcmt
+Either your installer
+
+gcmt -c file.cmm program
+- compiles the file
+
+All Mods:
+-c: compile
+-r: run
+-e: display all errors
+- warn: do not issue warnings
+-eue (error unexpected): do not issue errors
+-cc: issue code generated by C code
+
+Examples:
+gcmt-cc file.cmm file. c / / save to file. c
+gcmt-eue-c file.cmm program // if there is an error, it does not return it
+gcmt-warn-c file.cmm program // no warnings
+gcmt-e file.cmm / / returns all errors without compilation
+gcmt-r program / / launches
+================================================================================
+17. ERRORS
+================================================================================
+Error Format:
+line: string symbol: character by count ERROR (number of errors per line): line
+                     ^^^ 
+ Pointer to a string
+REASON: the reason why the error occurred, (2 errors, and so on)
+
+Examples (errors may be inaccurate because the person writes them):
+say!("hello)
+Error:
+line: 1, symbol: 11 ERROR:
+say!("hello)
+             ^^^
+REASON: expected '"' got ')'
+
+if (a == b) {
+
+}
+line: 1, symbol: 5 ERROR:
+if (a == b)
+   ^^^
+REASON: Not found variable: 'a', not found variable 'b'
+
+const x = 10 () 5
+line: 1, symbol: 9 ERROR:
+const x = 10 () 5
+         ^^^
+REASON: Unknown operator '()'
+need: ==, != >, <, >=, <=, +, -, *, /
+
+input(age, str)
+line: 1, symbol: 8 ERROR:
+input(age, str)
+        ^^^
+REASON: Not found variable 'age', unknown type 'str' need "string, char, int, float"
+
+print("Hello")
+line: 1, symbol: 1 ERROR:
+print("Hello")
+^^^
+REASON: Unknown feature 'print'
+
+say!("Hello");;
+line: 1, symbol: 15 ERROR:
+say!("Hello");;
+               ^^^
+REASON: Unexpected ';'
+
+const if = 10
+line: 1, symbol: 5 ERROR:
+const if = 10
+    ^^^
+REASON: 'if' is a reserved keyword
+
+fn add(x: int, y: int) -> int {
+    return x + y
+}
+add(1, 2, 3)
+line: 4, symbol: 10 ERROR:
+add(1, 2, 3)
+         ^^^
+REASON: Too many arguments (expected 2, got 3)
+
+create_file(123) {
+    fsay!("Hello")
+}
+line: 1, symbol: 14 ERROR:
+create_file(123)
+             ^^^
+REASON: Expected string, got int
+
+fn add(x: int, y: string) -> int {
+return x + y
+}
+line: 2, symbol: 15 ERROR:
+return x + y
+               ^^^
+REASON: can't add int and string
+
+fn min(x: int, y: string) -> int {
+return x - y
+}
+line: 2, symbol: 15 ERROR:
+return x - y
+               ^^^
+REASON: can't subtract int and string
+
+fn mul(x: int, y: string) -> int {
+return x * y
+}
+line: 2, symbol: 15 ERROR:
+return x * y
+               ^^^
+REASON: can't multiply int and string
+
+fn div(x: int, y: string) -> int {
+return x / y
+}
+line: 2, symbol: 15 ERROR:
+return x / y
+               ^^^
+REASON: can't divide int and string
+
+fn add(x: string, y: int) -> int {
+return x + y
+}
+line: 2, symbol: 15 ERROR:
+return x + y
+               ^^^
+REASON: can't add string and int
+// and so on for everyone
+
+17.1. Future Feature Errors
+=============================
+- C-- 1.0 has a unique error system
+For example, if you wrote
+ptr *p = #x
+- this will be available in 1.2
+
+It won't just be Unknown
+And here it is
+line: 1, symbol: 1 ERROR (1):
+ptr *p = #x
+^^^
+REASON: Feature 'ptr'
+is not Available in C-- 1.0
+AVAILABLE: C-- 1.2
+Or for example
+line: 1, symbol: 6 ERROR (1):
+say!(strtoint("123"))
+      ^^^
+REASON: Feature 'strtoint' is not available in C-- 1.0
+AVAILABLE: C-- 1.1
+
+
+17.2. WARNING
+=============================
+Format:
+line: line, symbol: symbol WARNING:
+Line
+^ ^ ^ pointer to a string
+REASON: the reason
+
+Examples:
+const x = 10
+// ...
+line: 1, symbol: 5 WARNING:
+const x = 10
+     ^^^
+REASON: Unused variable 'x'
+=============================
+=============================
+=====================
+18. ENUMS
+================================================================================
+
+enum Color {
+    Red = 23,
+    Green = 42,
+    Blue = 54
+}
+
+const c = Color.Red
+say!(c) // 23
+
+
+================================================================================
+19. STRUCTURES (struct)
+================================================================================
+struct User {
+   const name[500]: string
+   const age:   int
+   const isAdmin: bool
+}
+
+const me = User{"Andrey", 10, true}
+say!(me.name)
+
+19.1. STRUCTURE ARRAYS
+=============================
+const/var arr[size] = null
+- creating an empty array of structures
+
+const/var arr[size] = [
+struct{fields}
+struct{fields}
+]
+- creating an array of structures with elements
+
+arr[index]. field
+- access to the element
+
+arr[index] = Struct{...}
+- adding an element / replacing it
+
+19.2. Nested Structures
+================================================================================
+enum node {
+NODE_PLUS,
+NODE_MINUS,
+NODE_STAR,
+NODE_WAND
+}
+struct AST {
+const node: node
+const value: string[]
+const next: AST
+}
+
+const ASTNode = AST{NODE_PLUS, "+", AST{NODE_MINUS, "-", AST{NODE_STAR, "*", AST{NODE_WAND, "/", null}}}}
+
+say!(ASTNode.value) // "+"
+say!(ASTNode.next.value) // "-"
+say!(ASTNode.next.next.value) // "*"
+say!(ASTNode.next.next.next.value) // "/"
+================================================================================
+20. SPECIAL CHARACTERS
+================================================================================
+\0
+- end of line
+
+\n
+- new line
+
+\t
+- tabulation
+
+\r
+- carriage return
+
+\a 
+- sound
+
+\b 
+- backspace (removes the character)
+
+\\
+- backslash
+
+\"
+- quotation mark
+================================================================================
+22. NULL Arguments
+================================================================================
+fn greet(name: string) {
+if (name == null) {
+return "Hello, guest"
+}
+else {
+return " Hello,", name
+}
+ }
+ fn main() {
+ const x = greet(null)
+ say!(x)
+ - output: Hello, guest
+ }
+================================================================================
+23. FULL EXAMPLE
+================================================================================
+
+/ / The program: to-do list
+
+fn main() {
+    var task
+    var choice
+    
+    while (true) {
+        say!("\n==== = TO-DO LIST =====")
+        say!("1. Show issues")
+        say!("2. Add an issue")
+        say!("3. Clear all")
+        say!("4. Exit")
+        input(choice, int)
+        
+        if (choice == 1) {
+            const tasks = read_file("tasks.txt")
+            if (tasks == null) {
+                say!("Error reading file!")
+            } else {
+                if (!file_exists ("tasks.txt")) {
+                    say!("No issues")
+                } else {
+                    say!("Tasks: \n", tasks)
+                }
+            }
+            press()
+            cls()
+            
+        } else if (choice == 2) {
+            say!("Enter the task")
+            input(task, string)
+          const c =  append_file("tasks.txt") {
+                fsay!(task)
+            }
+            if (c == 0) {
+                say!("Error saving the task!")
+            } else {
+                say!("Added!")
+            }
+            ssleep(1)
+            cls()
+            
+        } else if (choice == 3) {
+         const c =   write_file("tasks.txt") {
+                fsay!("")
+            }
+            if (c == 0) {
+                say!("Error clearing file!")
+            } else {
+                say!("All cleared!")
+            }
+            ssleep(1)
+            cls()
+            
+        } else if (choice == 4) {
+            say!("Goodbye, Commander!")
+            break
+            
+        } else {
+            say!("Unknown command")
+            ssleep(1)
+            cls()
+        }
+    }
+}
+
+================================================================================
+24. TEAM TABLE
+================================================================================
+
+/ Command / Purpose | Syntax |
+|---------------|-------------------------|----------------------------------------------|
+| const / Constant | const x = 10 |
+| var / Variable | var x = 10 |
+| say!() / Output with hyphenation | say!("text")                                |
+| say () / Output without hyphenation | say ("text")                                 |
+| input () / Input with type checking | input(var, int) |
+| cls() | Clearing the screen | cls() |
+| press() | Waiting for Enter | press() |
+| ssleep() / Pause (sec)             | ssleep(5)                                    |
+| msleep() | Pause (ms) | msleep(500) |
+| create_file() | Create a file | create_file("file.txt") { fsay!() }           |
+| append_file() | Add to the end | append_file("file.txt") { fsay!() }           |
+| write_file() | Overwrite | write_file("file.txt") { fsay!() }            |
+| read_file()    / Read / const data = read_file ("file.txt")              |
+| file_exists("file")         / Checking the existence of | if (file_exists("file.txt")) { ... }                       |
+| if / Condition | if (x > 5) { ... }                           |
+| while / Loop | while (x < 10) { ... }                       |
+| for / Loop with counter | for (var i = 0, i < 10, i++) { ... }             |
+| break | Exit the loop | break |
+| continue | Skip iteration | continue |
+| / / / Comment | / / text |
+| fatal() | Fatal error | fatal ("message")                           |
+| fn / Function declaration | fn name() -> void* { ... }                            |
+| return | Return from the function | return value |
+/ strlen() | Length of string in bytes without \0 / strlen ("Hello") → 5 |
+| strupper()    / Upper case / strupper ("hi") → "HI"    |
+| strlower()    / Lowercase | strlower ("HI") → "hi"    |
+| strtrim () / Remove spaces | strtrim ("hi") → "hi" |
+/ struct name | data structure | struct Human { const name[500]: string } |
+| enum name | enums | enum TokenType { TOKEN_LET } |
+C-- = 
+ Imperative
+ + Treatment Center
+ + Typing: Static + Strong + Explicit/Implicit
+ + Mid-level
+ + Memory: Automatic (stack), no GC (in C-- 1.2 there will be mem_alloc)
+
+PATH:
+🌱 GCMT+- (GNU C-- Translator)
+(v0. x, written in C)
+"Grandpa Wolf"
+Prototype, verification of ideas
+C-- -> C -> GCC/CLANG/TCC
+       |
+       ↓
+🐺 GCMT (GNU C-- Translator)
+(v1. 0, stable release)
+"Father Wolf"
+Written in C, a full-fledged translator
+C-- -> C -> GCC/CLANG/TCC
+       |
+       ↓
+⚡ GCMC (GNU C-- Compiler)
+(v1. 2, full-fledged compiler)
+(Written in C)
+"The Wolf Emperor"
+C-- - > ASM -> elf -> Execute
+=======================================================================================
+End of C-- 1.0 documentation 🐺 🔥
+=======================================================================================
+🐺 C-- IDEAS ARCHIVE (FULL LIST — C-- 1.1, 1.2. x AND 1.3) [UPDATED]
+================================================================================
+
+Features that are NOT included in C-- 1.0, BUT will be added in future versions.
+- C-- 1.1: Light and medium features
+- C-- 1.2. x: complex + system features
+- C-- 1.3: improving existing features
+
+
+================================================================================
+=============================== C-- 1.1 =======================================
+================================================================================
+1. STRING FUNCTIONS
+================================================================================
+
+strdel (occurrence of/1 (first), string, "substring")
+- delete substrings
+(returns: 0: error, 1: everything is fine)
+
+strfind (string, "substring"/ 'character')
+- find symbols in more detail below
+
+strdelspace (string, occurrence, or -1 to remove all spaces)
+- remove spaces
+(returns: 0: error no spaces found,
+Number_allocated_probels: everything is fine)
+
+strcat(dst, src)
+- gluing lines together
+(returns: 0: error, 1: everything is fine)
+
+strsplit (string, delim)
+- splits the string into tokens
+(returns: 0: delim not found, otherwise: [string])
+
+/ / SUBSTRING SEARCH (strfind)
+/ / Returns the found substring, if any
+/ / Returns null if not found
+// In the following conditions:!= NULL-success (found), NULL-none
+/ / Case-sensitive!
+
+const text2 = "Hello World!"
+
+/ / Search for a substring
+const result = strfind(text2, "World")   // result = "World"
+say!(result)                           // World
+
+// If not found — null
+const result2 = strfind(text2, "Mars")   // result2 = null
+
+/ / strfind_pos (x) returns the position of strfind!
+const pos = strfind_pos(result)
+// If result is null then pos will also be NULL
+
+/ / Checking in the condition (!= NULL = found, NULL = not found)
+if (strfind(text2, "World") != NULL) {
+    say!("Found!")
+}
+
+const found = strfind(text2, "World")
+if (found != null) {
+    say!("Found: ", found)
+}
+
+/ / Converting a string to a number (Dangerous! If string = = string, then there will be an error in runtime)
+const num = strtoint("123")       // 123
+(returns: -1: error, number: everything is fine)
+
+/ / Concatenation (the old way, via ,)
+const name = "Andrey"
+"let greeting", " Hello,", name / / " Hello, Andrey!"
+
+/ / Copying a string
+const copy = name
+
+
+
+2. repeat (REPEAT CODE N TIMES)
+================================================================================
+
+repeat(5) {
+    say!("Hello")
+}
+
+say!("Hello".repeat(5))
+// Вывод: HelloHelloHelloHelloHello
+
+3. typeof / sizeof
+================================================================================
+typeof(var)
+- returns string: variable/text type
+Example:
+const x = [1, 2, 3]
+say!(typeof(x))
+- output: [int]
+
+Example # 2:
+const x = User{"Andrey", 10, true}
+say!(typeof(x))
+- output: User
+
+sizeof(var)
+- returns the number of bytes of the type / structure/array / variable as in C
+For example:
+const arr[2] = [1, 2]
+sizeof (int) -> 4 bytes
+sizeof(arr) - > 8 bytes
+
+You can compare them like this
+if (typeof(x) != "int")
+
+
+4. Debugger
+================================================================================
+
+debug <true/false>
+- Enables / disables debug
+
+debug ("text")
+- Debug output with the [DEBUG] prefix:
+
+Example:
+debug <true>
+fn main() {
+debug ("It's out")
+debug <false>
+debug("this is not")
+}
+Conclusion:
+[DEBUG]: This is out
+
+
+5. IMPORT FILES (import "file")
+================================================================================
+
+Now the code can be split into several files.
+
+Syntax:
+import "filename.cmm"
+
+Where:
+- filename. cmm-file with C code--
+- The imported file must NOT contain main()
+- main() should only be in the main file
+- you don't need to specify where the file with main is located, gcmt will find it itself
+- File extension: .cmm (C--)
+
+EXAMPLES:
+
+✅ Correct (main file):
+
+// main.cmm
+lib <term>
+import "math.cmm"
+import "game.cmm"
+
+fn main() {
+    term_color("green")
+    say!(add(10, 5))
+    say!(player.hp)
+}
+
+✅ Correct (library):
+
+// math.cmm
+fn add(a, b) { return a + b }
+fn sub(a, b) { return a - b }
+const PI = 3.14159
+
+❌ Incorrect (the library should not contain main ()):
+
+/ / math.cmm ❌ ERROR!
+fn add(a: int, b: int) { return a + b }
+fn main() { say!("Hello") } // ❌ main() only in main. cmm!
+
+
+RULES:
+
+1. main() should ONLY be in main. cmm
+2. Imported files (.cmm) must NOT contain main()
+3. Double import is ignored (automatic protection)
+4. All functions from the imported file fall into the global space
+5. If there is a name conflict — compilation error
+6. lib < > connects built-in libraries with the specified version
+7. To compile a file with import, do the following:
+gcmt -c main.cmm math.cmm program
+gcmt -r program
+
+
+6. TIME
+=============================
+lib <time>
+- bible library
+
+struct Time {
+    seconds: int
+    minutes: int
+    hours: int
+
+    days: int
+    month: int
+    year: int
+
+ winter: bool / / (winter?)
+ spring: bool / / (spring?)
+ summer: bool / / (summer?)
+ autumn: bool / / (autumn?)
+
+    total_seconds: int
+    time_1980: int
+}
+(total_seconds is seconds since 1970)
+- built-in time structure (you don't need to write it)
+
+const/var x: Time = total_time()
+- creates structures with time storage (optional)
+
+const/var x = Time{fields}
+- you can just use the strktura for your own needs, but I don't recommend it
+
+say!(x.hours)
+- displays the hour!
+
+
+6.1. TIMER
+const/var x = timer_create(sec)
+- creating a timer
+(returns: void)
+
+timer_done(x)
+- determines whether the timer has ended?
+(returns: boolean)
+
+timer_wait(x)
+- the program freezes until the timer runs out (you can skip it)
+(returns: void)
+
+timer_finish(x)
+- force the timer to end
+(returns: void)
+
+timer_elapsed(x)
+- returns how many seconds have already passed
+(returns: int)
+
+timer_start(x)
+- starts the timer (optional)
+(returns: void)
+
+
+7. UPDATED OUTPUT (say!_work())
+================================================================================
+
+Syntax:
+"say!" _work ("id", "text") "OR"say_work" ("id", "text")
+
+How it works:
+- The first call with an alias creates a string
+- Subsequent calls with the same alias REPLACE this string
+- Each alias is a separate string
+
+Example:
+fn main() {
+ "say!" _work("progress", " Load: 0%")
+ "say!" _work("status", "Status: Pending")
+ "say!" _work("time", "Time: 0s")
+    
+ "say!" _work ("progress", " Load: 50%")
+ say!_work ("progress", " Loading: 100%")
+}
+
+Example with streams:
+fn loader() -> void {
+    for (i = 0, i <= 100, i++) {
+ """""""""""say!_work ("progress", " Loading:", i,"%")
+        msleep(100)
+    }
+ "say!" _work ("progress", " ✅ Download completed!")
+}
+
+fn main() {
+    thread("load", loader, null)
+    thread_wait("load")
+}
+
+In other languages:
+- Python: only via \r (one line)
+- C: only through \r (one line)
+- C--: ANY NUMBER OF LINES!
+
+
+8. LINE()
+================================================================================
+line(n)
+- outputs n empty lines
+
+For example:
+say!("I'm on the first line")
+line(3)
+say!("I'm on fourth")
+
+Conclusion:
+I'm on the first line
+
+
+I'm on fourth
+
+
+9. choose
+================================================================================
+choose_int(min, max)
+- selects a random number
+(Returns: int)
+
+const arr: [int] = [1, 2, 3]
+choose_arr(arr)
+- selects an element from the array
+(Returns: void* element)
+
+""""""""choose_str ("you", "I", "he", "she")
+- selects a random string
+(Returns: string)
+
+10. confirm
+====================================================================
+confirm("text")
+- outputs text with the prefix (Y/n): and waits for Y/n
+(returns: true if y, false if n)
+
+- very useful:
+ if (confirm ("⚠ ️Are you sure you want to delete the variable?")) {
+say!("deleting...")
+} else {
+say!("ok")
+}
+Conclusion:
+⚠ ️ Are you sure you want to delete the variable? (Y / n): y
+deleting...
+
+11. value
+================================================================================
+value (x) {
+x: { ... }
+default: { ... }
+}
+(Returns: void*: -1 not what did not fit, the value of the variable is fine)
+- compares the value of a variable can be done immediately like this:
+value (x) {
+x, y, ...: { ... }
+default: {...}
+}
+You can do it without default
+
+example:
+const err = 404
+value (err) {
+404, 400: {
+say!("page error")
+}
+default: {
+say!("unknown error")
+}
+ }
+
+
+11.1. MODS
+=============================
+- UNIQUE FEATURE
+syntax:
+value (x, mode) {
+...
+}
+Here are all the mods:
+STANDART = standard
+IGNORE_REGISTER = case-insensitive
+STRFIND_MODE = as strfind
+IGNORE_WHITESPACE = independent of spaces
+Can be combined with |:
+IGNORE_REGISTER | STFIND_MODE
+
+Example of standard, ignore_register, strfind_mode:
+STANDARD:
+value (x, STANDARD) {
+"Hello": { say!("hello") }
+default: { say!("I don't understand")}
+}
+Disadvantages:
+Doesn't work: Hi, hi, HI, HI, and so on
+You need to hit exactly the right spot
+
+IGNORE_REGISTER:
+value (x, IGNORE_REGISTER) {
+"hello" { say!("HELLO") }
+default: { say!("I don't understand")}
+}
+Advantages:
+Works hi, Hi, Hi, HI, hi, and so on
+Disadvantages:
+No
+
+STRFIND_MODE:
+value (x, STRFIND_MODE) {
+"hello": { say!("hello") }
+default: { say!("I don't understand")}
+}
+Advantages:
+Works and hi, hi my name is Andrey, hi I'm 35 years old
+Disadvantages:
+Not always needed
+
+
+12. constant / macro
+================================================================================
+Constant syntax:
+constant NAME = value
+Macro syntax:
+macro NAME (arguments: type) = how to replace it
+
+Here is an example of constant:
+constant X = 10
+say!(X)
+Replaced with
+say!(10)
+
+
+Example of macros:
+macro ADD(x: int, y: int) = (x) + (y)
+
+macro REPEAT(code: string, n: int) = {
+for (var i = 0, i < n, i++) {
+code
+}
+ }
+
+let result = ADD(5 + 5, 5 + 5)
+// Turns into
+let result = (5 + 5) + (5 + 5)
+// 20
+REPEAT("say!(\"Hello\")\n say!(\"word\"", 5)
+// Turns into
+for (var i = 0, i < 5, i++) {
+say!("Hello")
+ say!("world")
+}
+
+================================================================================
+=============================== C-- 1.2.1 =======================================
+================================================================================
+
+
+13. POINTERS (FULL SECTION)
+================================================================================
+
+13.1. REGULAR POINTERS (Decree)
+
+Keyword: ptr (point) or const ptr
+
+Syntax:
+ ptr *name: (optional: type) = #variable
+
+Example:
+    const x = 10
+ const ptr *p: int = #x / / pointer *p points to x
+    say!(*p)             // 10
+
+If so:
+const x = 10
+ptr *p = #x / / error! #x is immutable and ptr is mutable
+
+Array of pointers:
+var x = 10
+var y = 20
+ptr *p[2] = [#x, #y] / / type = [int]
+
+
+Peculiarities:
+ - Operator # - taking an address (like & in C)
+ - An asterisk is required in the index declaration
+ - Asterisk — dereferencing
+ - ptr-built-in type
+
+Passing to the function:
+    fn change(*p: ptr) {
+        *p = 42
+    }
+
+    fn main() {
+        var a = 5
+        ptr *ptr = #a
+        change(ptr)
+        say!(a)   // 42
+    }
+
+13.2. POINTERS TO ARRAYS
+
+Syntax:
+    var arr = [1, 2, 3, 4, 5]
+ ptr *ptr = #arr[0] / / pointer to the first element, type = [int]
+
+Pointer arithmetic (3 ways):
+
+1. Offset by +(int):
+    say!(*(ptr + 1))       // second element (index 1)
+
+2. Index access (as in C):
+    say!(*ptr[i]) // access by index i
+
+3. Pointer shift (ptr++):
+    ptr++
+    say!(*ptr)             // second element
+
+Here is an example of parsing a string:
+var name = "Andrey"
+ptr *p = #name
+let i = 1
+while (*p != '\0') {
+i++
+p++
+say!(i, " letter: ", *p)
+}
+Conclusion:
+2 letter: n
+3 letter: d
+4 letter: p
+5 letter: e
+6 letter: th
+7 letter: / / here \0
+
+
+13.3. NULL POINTERS
+
+Syntax:
+ ptr *ptr = null / / the pointer is empty
+- if the pointer is empty and you are trying to assign a value to it, then there will be an error
+Example:
+    fn main() {
+        ptr *ptr = null
+        var x = 100
+ ptr = #x / / direct to x
+
+        if (ptr == null) {
+            say!("pointer is empty")
+        }
+
+        if (ptr != null) {
+            say!("the pointer is not empty")
+        }
+    }
+You can't do this:
+const ptr *p = null
+*p = 20
+
+Peculiarities:
+ - null (in small letters)
+ - Without ;
+ - Without & (use #)
+
+13.4. POINTERS TO STRUCTURES (->)
+
+    struct User {
+        let name: string
+        let age: int
+    }
+
+    const user = User{"Andrey", 10}
+ ptr *p = #user / / type = User
+ say!(p->name) / / "Andrey"
+
+13.5 POINTED TO FUNCTIONS (funcptr)
+funcptr — a separate type for variables (const, var, ptr, funcptr)
+You can write without # and with #
+
+fn add(a: int, b: int) -> int {
+return a + b
+}
+
+fn main() {
+funcptr *ptr(int, int) -> int = add / / without # type = int
+ptr(5, 5)
+}
+
+Example # 2:
+fn calc(x: funcptr(int, int) -> int) {
+return x(5, 5)
+}
+
+fn add(a: int, b: int) -> int {
+return a + b
+}
+
+fn main() {
+calc(#add) / / with #
+}
+
+Example # 3:
+fn main() {
+funcptr *p(int, int) -> int[2] = [add, #sub, mul] // mixed type = [int]
+p[0](5, 5)
+}
+
+
+14. C PREPROCESSOR--
+================================================================================
+All constants (with any case):
+linux, apple, windows, android, aarch64, aarch32, x86_64, x86, cmm_version_*_*, simple condition, 
+
+@ ifdef LINUX // with any case
+say!("linux")
+@elifdef APPLE
+say!("macOS/ios")
+@elifdef WINDOWS
+say!("windows")
+@elsedef
+say!("unknown")
+@endif
+
+@ifdef AArch64
+say!("arm64")
+@elifdef AArch32
+say!("arm32")
+@elifdef x86_64
+say!("x64")
+@elifdef x86
+say!("x86")
+@elsedef
+say!("unknown")
+@endif
+
+@ifdef CMM_VERSION_1_2
+say!("c-- version: 1.2")
+@elifdef !CMM_VERSION_1_2
+say!("c-- version: !1.2")
+@endif
+
+@ifdef 20 == 20
+say!("Yes!")
+@endif
+================================================================================
+=============================== C-- 1.2.2 =======================================
+================================================================================
+15. THREADS
+================================================================================
+
+thread ("id", Function, Arguments/NULL)
+- creates a stream
+(returns: 0: error, 1: everything is fine)
+
+thread_wait("id");
+- Waits for the end of the Stream
+(returns: void* what the stream returned)
+
+thread_kill("id");
+- Kills The Stream
+(returns: 0: error, 1: everything is fine)
+
+Example:
+fn worker(arg: void*) -> void {
+    say!("Argument: ", arg)
+    thread_kill("arg")
+}
+
+fn main() {
+    thread("arg", worker, 42)
+    thread_wait("arg")
+    say!("program end")
+}
+
+Conclusion:
+Argument: 42
+program end
+
+15.1. MUTEXES
+=============================
+var x = mutex_create()
+- creates a mutex
+
+mutex_init(x)
+- initializes the mutex
+
+mutex_lock(x)
+- blocks the mutex
+
+mutex_unlock(x)
+- unlocks the mutex
+
+mutex_destroy(x)
+- destroys the mutex (negative for memory)
+
+- example (in words):
+
+2 threads go to the same data
+You create a mutex (lock)
+In the function for the stream
+You close mutex (mutex_lock)
+And 2 the thread can't log in
+And it will need to wait
+Until thread 1 does the job
+And when it does the job
+And opens the door (mutex_unlock)
+And then the second thread comes in and does the work
+================================================================================
+=============================== C-- 1.2.3 =======================================
+================================================================================
+16. WORKING WITH THE TERMINAL (term_*)
+================================================================================
+
+term_echo_off()
+- function to hide input visibility
+
+term_echo_on()
+- function to show input
+
+term_icanon_off()
+- function to turn off input with Enter
+
+term_icanon_on()
+- function what to enable input with Enter
+
+term_getch()
+- gets a character without Enter (immediately) (returns: null no characters,!= null (which character) is a character)
+
+term_goto(row, column)
+- move the cursor to a row and column
+
+term_reset()
+- Reset All Terminal Settings
+
+term_color("color")
+- select text color (red, green, orange, pink, purple, blue) and any colors, 0 = reset
+
+term_color_rgb(r, g, b)
+- same thing but with rgb, 0 = reset
+
+term_color_hex("hex")
+- same thing but with hex, 0 = reset
+
+term_color_bg("color")
+- [EXCLUSIVE]
+Selects the background color of the entire terminal
+
+term_color_bg_rgb(r, g, b)
+- Exactly the same but with rgb
+
+term_color_bg_hex("hex")
+- Exactly the same but with hex
+
+term_get_button("key")
+- the program is waiting for a key.
+
+pressed ("key") {
+Action
+}
+- the same thing, but when you click, an action occurs (works in a separate thread) the main thread is not blocked
+Here is the entire list of keys:
+q, w, e, r, t, y, u, i, o, p, a, s, d, f, g, h, j, k, l, z, x, c, v, b, n, m (and the same for large ones), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, F1-F12, ESC, TAB, SHIFT, CTRL, WIN, ALT, ANY (any key) (optional in large letters), whitespace, enter, backspace, del, up (up arrow), down, right, left, end, page up, page down,/,*,+, -, pause, break, volume_up, volume_down, and any combinations via + are also supported, for example CTRL+D (large)
+
+term_height()
+- terminal height
+
+term_width()
+- terminal width
+
+term_tick()
+- the peak sound sounds like in \a in C
+
+term_input_with (symbol, variable, type)
+- enter but other characters are shown!
+example:
+term_input_with("*", variable, string)
+- now all input is asterisks!
+Или term_input_with("X", variable, string)
+- now all input is X!
+- you can even use multiple characters
+term_input_with("HA", variable, string)
+"Oh, my God!
+
+term_input_end_with(chr, variable, type)
+- ends input with chr (only 1 character):
+term_input_end_with(';', var, string) 
+(; is not saved to the buffer)
+
+
+term_say ("text", row, column)
+- output but in [row, column] locality.
+Like term_goto and say
+
+
+
+EXAMPLE WITH term_* (Implementing term_input_with without saving)!
+fn main() {
+    term_color("gray")
+    term_echo_off()
+    term_icanon_off()
+    while (true) {
+        const c = term_getch()
+        if (c != null) {
+            say!("*")
+        }
+    }
+    term_color("0")
+}
+Conclusion:
+Everything you write turns into *
+================================================================================
+================================================================================
+=============================== C-- 1.2.4 =======================================
+================================================================================
+17. SOCKETS
+================================================================================
+socket(ipv4, tcp/udp, port)
+- creating a socket (but so far only ipv4)
+(returns: 0: error, 1: everything is fine)
+
+bind(sock)
+- connecting a socket to an address and port
+(returns: 0: error, 1: everything is fine) (TCP / UDP)
+
+listen(sock, how many user_maximum_wait)
+- puts the socket in client standby mode
+(returns: 0: error, 1: everything is fine) (TCP)
+
+accept(sock)
+- accepts a client
+(returns: 0: error, 1: everything is fine) (TCP)
+
+connect(accept_sock, "ip"/SOCK_ALL)
+- connects the client to the server (TCP)
+(returns: 0: error, 1: everything is fine)
+
+send(accept_sock, "text")
+- sending text to the client (TCP)
+(returns: string that you sent)
+
+"sendto" (udp_sock, "text", " ip " /SOCK_ALL, port)
+- sending text to the client (UDP)
+(returns: string that you sent)
+
+read(accept_sock, in_which_variable_save)
+- reads all text from the user
+(returns: string from user) (TCP)
+
+readto(udp_sock, in_which_variable_ save, ip, port)
+- reads all text from the user
+From any ip address
+And stores user data (ip and port) in the ip, port variable (returns: string from user) (UDP)
+
+close(sock/accept_sock)
+- closes the socket
+(returns: 0: error, 1: everything is fine)
+fact # 1
+- to write an HTML server
+Just write a variable with html code (preferably with the Content-Type, Content-Length headers)
+and then send it via send
+And go to https://localhost:вашпорт
+================================================================================
+=============================== C-- 1.2.5 =======================================
+================================================================================
+18. mem_*
+================================================================================
+mem_alloc(type, size)
+- allocates memory negatively in a variable (returns: void* like malloc in C) (required in the ptr type)
+Example:
+ptr *x = mem_alloc(int, 100)
+- allocates memory for 100 int (400 BYTES)
+
+Filling in the form:
+for (i = 1, i < 100, i++) {
+x[i] = i * 10;
+}
+Example 2:
+ptr *x = mem_alloc(string, 6)
+- allocated memory for 6 string characters
+x = "Hello"
+- filling in the form
+
+It is mandatory to specify mem_free(x)after working with memory
+Otherwise, it will leak
+Double Free Protection
+If you write
+ptr *p = mem_alloc(int, 100)
+mem_free(p)
+mem_free(p)
+
+That will be
+Mistake
+
+mem_realloc(ptr, new_size)
+- expand/downgrade
+Heap Size
+(returns: void)
+
+mem_cpy(dst, src, n)
+- copies raw bytes it doesn't know what a string is so you can even copy an int
+(returns: void)
+
+mem_cmp(a, b, n)
+- compares raw bytes
+(returns: 0 is not equal, 1 is equal, > 1 is the first greater, < 1 is the second greater)
+
+mem_set(dst, chr, n)
+- fills bytes with characters
+(returns: void)
+
+mem_ccpy(dst, src, ch, n)
+- copies bytes up to a specific character (returns: void)
+
+
+19. WORKING WITH DIRECTORIES
+=============================
+mkdir("path")
+- creates a folder by path (returns: 0: error or path not found, 1: everything is fine)
+. = in the current directory from cd
+
+rmdir ("path")
+- deletes a folder along the path
+(returns: 0: error or path not found, 1: everything is fine)
+. = in the current directory from cd
+
+rmdir_r ("path")
+- DANGEROUS (THERE MAY BE NO RIGHTS/DELETE AN IMPORTANT FOLDER) 
+Deletes the folder and all its contents along the path (returns: -1: deleting the system folder 0: error or path not found, 1: everything is fine)
+. = in the current directory from cd
+
+cd ("path")
+- change directory (returns: 0: error, 1: everything is fine)
+
+pwd()
+- displays the current directory for example: storage/emulated/0/mydir (returns: string)
+
+ls ("path")
+- displays all files/folders
+For example:
+1. file.cmm
+2. main.cmm
+and so on
+ (returns: string)
+. = in the current directory from cd
+
+dir_exists("путь")
+- is there such a folder on the way?
+(Returns: bool)
+. = in the current directory from cd
+
+create_file ("path/file")
+- creates a file by folder
+================================================================================
+=============================== C-- 1.3 =======================================
+================================================================================
+
+20. IMPROVING ARRAYS
+================================================================================
+
+reverse(arr)
+- expands the array
+
+mix(arr)
+- shuffles the array randomly
+
+to_string(arr)
+- from array to string 1 2 3 4 5 to "1 2 3 4 5"
+
+Example:
+fn main() {
+let arr = [1, 2, 3, 4, 5]
+let mix_arr = mix(arr)
+say!(mix_arr) / / random (not possible to predict)
+say!(reverse(arr)) // 5, 4, 3, 2, 1
+}
+
+
+21. IMPROVED INPUT
+================================================================================
+
+inputm (variable, type)
+// input-multi
+/ / reads spaces!!!
+// before enter
+/ / returns: 0: incorrect type, 1: everything is fine
+
+const name[500]
+inputm(name, string)
+- Input: Andrey Lesser\n
+- In name: Andrey Lesser
+Without inputm, it would be:
+name = "Andrey"
+
+22. IMPROVING FILES
+================================================================================
+file_copy("dst", "src")
+- copying files (returns: 0 error, 1 everything is fine)
+
+file_delete("file.txt")
+- delete a file (returns exactly the same)
+
+
+23. FEATURE IMPROVEMENTS
+================================================================================
+
+default value of arguments
+- default value for arguments if they are null
+
+Example:
+fn greet(name: string default: "guest", age: int default: -1) {
+say!("Hello "" "you," "age, "years")
+}
+
+greet(null, null)
+Output: hello guest you are -1 years old
+
+
+24. EVERY
+================================================================================
+every(ms) {
+action
+break = end
+}
+- it's like while (true) + msleep + threads in one (doesn't block the main thread)
+
+Example:
+every(1000) {
+say!("Tick")
+}
+
+
+25. LIST
+================================================================================
+- Full list of keywords!
+
+Functions:
+... Keyword for declaring in arguments
+list_t type for list
+list_init (list, type) initializes list with any type returns void
+list_next (list) jumps to the next element from arguments (returns null when no arguments are found)
+Saves the argument to a list
+list_all (where to save) returns [void*] array with all arguments returns void
+list_has_next (list) does list have the right to return the next bool?
+
+And here is an example:
+fn print_all(first: void*, ...) -> void {
+    const arg: list_t
+ list_init(arg, void*) / / Specifying the type: void*
+    say!("First: ", first)
+    
+    while (arg != null) {
+        list_next(arg)
+        say!("Next: ", arg)
+    }
+}
+
+fn main() {
+    print_all("Hello", 1, 2, "World", "!", "C--")
+}
+// Output:
+// First one: Hello
+// Next: 1
+// Next: 2
+// Next: World
+/ / Next: !
+/ / Next: C--
+================================================================================
+PIVOT TABLE (BY VERSION) — UPDATED
+================================================================================
+
+| No. | Feature | Version | Implementation Complexity |
+|---|------|--------|-----------|
+| 1 | String functions | 1.1 | 🟢 Легкая |
+| 2 | repeat | 1.1 | 🟢 Easy |
+| 3 | typeof / sizeof | 1.1 | 🟡 Average |
+| 4 | Debugger | 1.1 / 🔴 Сложная |
+| 5 | import "file" | 1.1 | 🟢 Легкая |
+| 6 | Time | 1.1 / 🟢 Easy |
+| 7 | say!_work() | 1.1 | 🟡 Average |
+| 8 | line | 1.1 / 🟢 Easy |
+| 9 | choose | 1.1 | 🟡 Average |
+| 10 | confirm | 1.1 / 🟢 Easy |
+| 11 | value | 1.1 / 🟡 Average |
+| 12 | constant / macro | 1.1 / 🟡 Average |
+| 13 / Pointers (ptr) | 1.2.1 | 🔴 Сложная |
+| 14 | C preprocessor-- ( @ ) | 1.2.1 | 🟢 Легкая |
+| 15 | THREADS | 1.2.2 | 🔴 Complex |
+| 16 | term_* | 1.2.3 | 🔴 Complex |
+| 17 / SOCKETS | 1.2.5 / 🔴 Complex |
+| 18 / mem_* | 1.2.6 | 🔴 Complex |
+| 19 | WORKING WITH DIRECTORIES | 1.2.6 | 🟡 Average |
+| 20 / Improving arrays | 1.3 / 🟡 Average |
+| 21 / Input improvement | 1.3 / 🟡 Average |
+| 22 / File improvements | 1.3 / 🟡 Average |
+| 23 / Improved features | 1.3 / 🟡 Average |
+| 24 | every | 1.3 | 🟡 Average |
+| 25 | list | 1.3 | 🔴 Complex |
+================================================================================
+TOTAL BY VERSION — UPDATED:
+================================================================================
+
+| Version | Feature | What you added |
+|--------|-----|--------------|
+| C-- 1.0 | ? / Basic language (see documentation above) |
+| C-- 1.1 / 10 / lines, repeat, debug, import, time, say!_work, line, choose, value, constant / macro |
+| C-- 1.2.x | 9 / Pointers, Preprocessor, Threads, term_*, alias, Sockets, mem_*, working with directories |
+| C-- 1.3 | 6 / improving arrays, input, files, functions, every, list |
+
+================================================================================
+TOTAL IN THE ARCHIVE: 25 FEATURES
+================================================================================
+
+
+================================================================================
+ARCHIVE STATUS (UPDATED)
+================================================================================
+
+C-- 1.0: a language without pointers, memory, cross-platform (clean, simple)
+C-- 1.1: adding convenient features (lines, repeat, debug, import, time, say!work, line, choose, value, constant / macro)
+C-- 1.2. x: add system level (pointers, Preprocessor, Threads, term_*, TUI WINDOWS, alias, sockets, mem_*, directories)
+C-- 1.3: improvements to existing features and syntactic sugar (arrays, input, files, functions, every, list)
+
+
+================================================================================
+FILE EXTENSIONS
+================================================================================
+.cmm-C code-- (main. cmm, math. cmm, game. cmm)
+================================================================================
+End of C -- Idea Archive 🐺 🔥
+================================================================================
