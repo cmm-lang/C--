@@ -10,14 +10,8 @@ find in docs/en/documentation.txt
 ## GCMT+-
 find in src/gcmt+-.c
 
-## examples
+## example
 fn main() {
 say!("Hello, World!")
-}
-
-fn main() {
-const x: string = null
-input(x, string)
-say!(x)
 }
 
