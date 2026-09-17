@@ -8,6 +8,16 @@ C-- ОФИЦИАЛЬНАЯ ДОКУМЕНТАЦИЯ 🐺
 Талисман: Волк
 ================================================================================
 0. ТИПЫ ДАННЫХ
+C-- ОФИЦИАЛЬНАЯ ДОКУМЕНТАЦИЯ 🐺
+================================================================================
+
+Версия: 1.0
+Автор: Андрей
+Философия: C На Стероидах
+Стандартная библиотека: ВСТРОЕНА В ТРАНСЛЯТОР!!!
+Талисман: Волк
+================================================================================
+0. ТИПЫ ДАННЫХ
 ================================================================================
 
 char          - 1 символ, пишется с '' (например: 'A', '9', '#')
@@ -19,7 +29,7 @@ var str[] = "text"
 int           - целое число (например: 10, -5, 0)
 float         - число с плавающей точкой (например: 3.14, -2.5)
 bool       - логическое значение (true или false)
-null             - пустое значение
+type null             - пустое значение
 
 Примеры:
     const letter = 'A'                // char
@@ -37,12 +47,12 @@ say!("первая буква: В")
 1. ПЕРЕМЕННЫЕ
 ================================================================================
 
-const name / const name = null                       - пустая переменная (Null Variable)
-const name: type / const name: type = null                       - пустая переменная с типом
+const name = type null                       - пустая переменная (Null Variable)
+const name: type null = type null                       - пустая переменная с типом
 const name = значение             - неизменяемая переменная
 const name: type = значение                       - неизменяемая переменная с типом
-var name / var name = null                        - пустая изменяемая переменная
-var name: type / var name: type = null                        - пустая изменяемая переменная с типом
+var name = type null                      - пустая изменяемая переменная
+var name: type null = type null                        - пустая изменяемая переменная с типом
 var name = значение             - изменяемая переменная
 var name: type = значение                     - изменяемая переменная с типом
 name = значение                 - присваивание
@@ -54,7 +64,9 @@ char, string, int, float, bool
 Стрктуры и enum:
 name, [name]
 Специальные:
-void*, [void*], null, [null]
+void*, [void*], type null, type[null]
+Для ptr (v1.2):
+*type, [*type], *[type], **type, *[*type], **[type]
 
 Примеры всех типов:
 const x: char = 'H'
@@ -71,16 +83,71 @@ const user: User = User{"Андрей", 10, true}
 const users[2]: [User] = [User{"Андрей", 11, false},  User{"Андрей", 10, true}]
 const color: Color = Color.red
 const colors[2]: [Color] = [Color.red, Color.blue]
-const X: void* = 42
-const Void[3]: [void*] = [42, "Hello", 3.14]
-const Null[500]: string = null
-const Nulls[2]: [string] = [null, null]
+const X: void* = (int)42
+const Void[3]: [void*] = [42, "Hello", 3.14] // при массивах будет ошибка нельзя
+const Null[500] = string null
+const Nulls[2] = string[null, null]
 Nulls[0] = "Hello, "
 Nulls[1] = "World!"
 say!(Nulls[0], Nulls[1])
 При:
-const xm[5]: [char] = ['H', 'h']
+const xmm[5]: [char] = ['H', 'h']
 В неинициализированых элементах будет содержаться мусор
+Больше про null:
+var nullable = string null
+nullable = "Hello"
+nullable = int null // ошибка компиляции типизация = статическая а не динамическая
+var nullable2 = int null
+nullbale2 = 42
+var nullable3 = float null
+nullable3 = 3.14 
+var nullable4: User null = User null
+nullable4 = User{"Андрей", 10, true}
+var nullable11[2]: string[null] = string[null, null]
+
+Про типы ptr:
+const x: int = 10
+const y: int = 20
+const z: int = 30
+const zz: int = [1, 2, 3]
+// Простой указатель
+const ptr *p: *int = #x
+
+// Указатель на указатель
+const ptr *pp: **int = #p
+
+// Указатель на указатель на указатель
+const ptr *ppp: ***int = #pp
+
+// Массив указателей
+const ptr *arr[2]: [*int] = [#x, #y, #z]
+
+// Указатель на массив
+const ptr *p_arr[3]: *[int] = #zz
+
+// Указатель на элемент массива
+const ptr *p_el: *int = #zz[0]
+
+// Указатель на массив указателей
+const ptr *arr_p[2]: *[*int] = #arr
+
+// Указатель на указатель который указывает на массив указателей
+const ptr *arr_p_p[2]: **[*int] = #arr_p
+
+// Массив указателей на указатели
+const ptr *arr_impossible[2]: [**int] = [#p, #pp]
+
+// Указатель на массив указателей на указатели
+const ptr *arr_impossble_two[2]: *[**int] = #arr_impossible
+
+// Null-указатель
+ptr *c: *int null = *int null
+
+// Null-указатель на указатель
+ptr *d: **int null = **int null
+
+// Массив null-указателей
+const ptr *f[2]: [*int] = [*int][null, null]
 ================================================================================
 2. РАБОТА СО СТРОКАМИ
 ================================================================================
@@ -124,10 +191,10 @@ cls()                           - очищает экран
 Типы для input: string, char, int, float, bool
 
 Примеры:
-    var name
+    var name = string null
     input(name, string)           // Ввод строки
     
-    var age
+    var age = int null
    if (input(age, int) != 1) {
 fatal("ошибка: нужно ввести число")
 }
@@ -185,7 +252,7 @@ write_file("file.txt") {         - перезаписать файл
 (возвращает: 0: ошибка, 1: всё нормально)
 
 const content = read_file("file.txt")  - прочитать весь файл
-(возвращает: == null: ошибка, != null: всё нормально)
+(возвращает: == string null: ошибка, != string null: всё нормально)
 
 if (!file_exists("file.txt")) {                - проверка существования файла
     // файла нет
@@ -229,7 +296,7 @@ add_to_file("file", "работает")
     
     // Чтение
     const content = read_file("notes.txt")
-    if (content == null) {
+    if (content == string null) {
         fatal("Ошибка чтения!")
     }
     say!("Содержимое: ", content)
@@ -359,12 +426,17 @@ arrlen(arr)                             -
 10. ФУНКЦИИ
 ================================================================================
 
-fn name(params: type) -> returning type { }             - объявление функции
+fn name(квалификатор params: type) -> returning type { }             - объявление функции
 return value                    - возврат значения
 name(args)                      - вызов функции
 
+Квалификаторы:
+const, var
+v1.2:
+ptr, const ptr
+
 Пример:
-    fn add(x: int, y: int) -> int {
+    fn add(const x: int, const y: int) -> int {
         return x + y
     }
     
@@ -375,14 +447,15 @@ name(args)                      - вызов функции
 
 Важно:
 - в аргументы можно передавать void*
-fn foo(x: void*) -> void*
+fn foo(var x: void*) -> void*
 Значит тип может быть любой
-функции в аргументы можно передавать обязательно с типом fn:
+
+функции в аргументы можно передавать обязательно с типом fn и с const/var (всё равно функции нельзя не как менять):
 fn function() -> void {
 say!("Hello")
 }
 
-fn foo(x: fn() -> void) -> void {
+fn foo(const x: fn() -> void) -> void {
 x()
 }
 
@@ -390,11 +463,11 @@ fn main() {
 foo(function)
 }
 Если там аргументы то надо писать аргументы например:
-fn add(x: int, y: int) {
+fn add(const x: int, const y: int) {
 return x + y
 }
 
-fn foo(x: fn(int, int), y: int, z: int) {
+fn foo(const x: fn(int, int), const y: int, const z: int) {
 return x(y, z)
 }
 
@@ -402,14 +475,14 @@ fn main() {
 foo(add, 10, 10) // 20
 }
 Сложные задачи:
-fn foo(callback: fn(int) -> int) {
+fn foo(const callback: fn(int) -> int) {
     // Здесь callback — это функция
     // Мы её вызываем с аргументом
     const result = callback(42)
     say!(result)
 }
 
-fn double(x: int) -> int {
+fn double(const x: int) -> int {
     return x * 2
 }
 
@@ -473,36 +546,7 @@ C {
 
 ⚠️ Предупреждение: Если весь код программы — это C вставка, Волк обижается.
 ================================================================================
-13. РАНТАЙМ ОШИБКИ (Runtime Fault)
-================================================================================
-Формат:
-line: строка, symbol: символ RUNTIME FAULT Signal n (SIGxxx): 
-строка
-^^^ указатель на строку
-REASON: причина
-
-Runtime Fault — система критических ошибок в C-- (аналог Segment Fault в C). Они вычисляются в runtime.
-
-Signal 1 (SIGDIV) - Деление на ноль
-Signal 2 (SIGTYPE) - неверные типы например: const c: char = "не так"
-Signal 3 (SIGSTACK) - Переполнение Стека
-
-Пример возникновения Signal 1:
-const temp = 10 / 0
-Ошибка:
-line: 1, symbol: 12 RUNTIME FAULT Signal 1 (SIGDIV):
-let temp = 10 / 0
-            ^^^
-REASON: Division by zero
-
-Пример возникновения Signal 3:
-const arr[1000000] = [1, 2, 3]  // too big for stack
-line: 1, symbol: 8 RUNTIME FAULT Signal 3 (SIGSTACK):
-const arr[1000000] = [1, 2, 3] // too
-        ^^^
-REASON: too big for stack
-================================================================================
-14. PANIC FAULT (panic error)
+13. PANIC FAULT (panic error)
 ================================================================================
 Формат:
 line: строка, symbol: символ PANIC FAULT Signal n (SIGxxx): 
@@ -514,15 +558,15 @@ REASON: причина
 
 В Разроботке...
 ================================================================================
-15. УНИКАЛЬНЫЕ ФИШКИ C--
+14. УНИКАЛЬНЫЕ ФИШКИ C--
 ================================================================================
 1. Null Variable
    Переменная может существовать без значения.
    
-   const name = null                   // Null Variable
+   const name = string null                   // Null Variable
    input(name, string)            // теперь name = "Андрей"
 ================================================================================
-16. Компилятор: GCMT
+15. Компилятор: GCMT
 ================================================================================
 Полное Название: GNU C-- Translator
 
@@ -548,7 +592,7 @@ gcmt -warn -c file.cmm program // предупреждений нету
 gcmt -e file.cmm // выдаёт все ошибки без компиляции
 gcmt -r program // запускает
 ================================================================================
-17. ОШИБКИ
+16. ОШИБКИ
 ================================================================================
 Формат Ошибок:
 line: строка symbol: символ  по счёту ERROR (сколько ошибок в строке): строка
@@ -570,20 +614,19 @@ if (a == b) {
 line: 1, symbol: 5 ERROR:
 if (a == b)
    ^^^
-REASON: Not found variable: 'a', not found variable 'b'
+REASON: undefined variable 'a'
+
+line: 1, symbol: 11 ERROR:
+if (a == b)
+           ^^^
+REASON: undefined variable 'b'
 
 const x = 10 () 5
 line: 1, symbol: 9 ERROR:
-const x = 10 () 5
+const x = 10 ( 5
          ^^^
-REASON: Unknown operator '()'
+REASON: Unknown operator '('
 need: ==, != >, <, >=, <=, +, -, *, /
-
-input(age, str)
-line: 1, symbol: 8 ERROR:
-input(age, str)
-        ^^^
-REASON: Not found variable 'age', unknown type 'str' need "string, char, int, float"
 
 print("Hello")
 line: 1, symbol: 1 ERROR:
@@ -661,7 +704,7 @@ return x + y
 REASON: can't add string and int
 // и так для всех
 
-17.1. Future Feature Errors
+16.1. Future Feature Errors
 =============================
 - в C-- 1.0 есть уникальная система ошибок
 Например если ты написал
@@ -684,7 +727,7 @@ REASON: Feature 'strtoint' is not available in C-- 1.0
 AVAILABLE: C-- 1.1
 
 
-17.2. WARNING
+16.2. WARNING
 =============================
 Формат:
 line: line, symbol: symbol WARNING:
@@ -702,7 +745,7 @@ REASON: Unused variable 'x'
 =============================
 =============================
 =====================
-18. ПЕРЕЧИСЛЕНИЯ (enum)
+17. ПЕРЕЧИСЛЕНИЯ (enum)
 ================================================================================
 
 enum Color {
@@ -716,7 +759,7 @@ say!(c) // 23
 
 
 ================================================================================
-19. СТРУКТУРЫ (struct)
+18. СТРУКТУРЫ (struct)
 ================================================================================
 struct User {
    const name[500]: string
@@ -727,7 +770,7 @@ struct User {
 const me = User{"Андрей", 10, true}
 say!(me.name)
 
-19.1. МАССИВЫ СТРУКТУР
+18.1. МАССИВЫ СТРУКТУР
 =============================
 const/var arr[размер] = null
 - создание пустого массива структур
@@ -744,7 +787,7 @@ arr[index].поле
 arr[index] = Struct{...}
 - добавление элемента / заменение
 
-19.2. Вложенные Структуры
+18.2. Вложенные Структуры
 ================================================================================
 enum node {
 NODE_PLUS,
@@ -765,7 +808,7 @@ say!(ASTNode.next.value) // "-"
 say!(ASTNode.next.next.value) // "*"
 say!(ASTNode.next.next.next.value) // "/"
 ================================================================================
-20. СПЕЦИАЛЬНЫЕ СИМВОЛЫ
+19. СПЕЦИАЛЬНЫЕ СИМВОЛЫ
 ================================================================================
 \0
 - конец строки
@@ -791,7 +834,7 @@ say!(ASTNode.next.next.next.value) // "/"
 \"
 - кавычка
 ================================================================================
-22. NULL Аргументы
+20. NULL Аргументы
 ================================================================================
 fn greet(name: string) {
 if (name == null) {
@@ -802,12 +845,12 @@ return "Привет, ", name
 }
  }
  fn main() {
- const x = greet(null)
+ const x = greet(string null)
  say!(x)
  - вывод: Привет, гость
  }
 ================================================================================
-23. ПОЛНЫЙ ПРИМЕР
+21. ПОЛНЫЙ ПРИМЕР
 ================================================================================
 
 // Программа: список дел
@@ -826,7 +869,7 @@ fn main() {
         
         if (choice == 1) {
             const tasks = read_file("tasks.txt")
-            if (tasks == null) {
+            if (tasks == string null) {
                 say!("Ошибка при чтении файла!")
             } else {
                 if (!file_exists ("tasks.txt")) {
@@ -877,7 +920,7 @@ fn main() {
 }
 
 ================================================================================
-24. ТАБЛИЦА КОМАНД
+22. ТАБЛИЦА КОМАНД
 ================================================================================
 
 | Команда       | Назначение              | Синтаксис                                    |
@@ -979,7 +1022,7 @@ strsplit(строка, delim)
 // ПОИСК ПОДСТРОКИ (strfind)
 // Возвращает найденную подстроку, если она есть
 // Возвращает null, если не найдена
-// В условиях: != NULL - успех (найдено), NULL - нет
+// В условиях: != string null - успех (найдено), string null - нет
 // Регистрозависимый!
 
 const text2 = "Hello World!"
@@ -991,23 +1034,23 @@ say!(result)                           // World
 // Если не найдено — null
 const result2 = strfind(text2, "Mars")   // result2 = null
 
-// strfind_pos(x) возращает позицию strfind!
-const pos = strfind_pos(result)
-// Если result null то pos тоже будет NULL
+// strfind_pos(x) возращает позицию
+const pos = strfind_pos(text2, "Mars")
+// mars не найден позиция = int null
 
-// Проверка в условии (!= NULL = найдено, NULL = не найдено)
-if (strfind(text2, "World") != NULL) {
+// Проверка в условии (!= string null = найдено, string null = не найдено)
+if (strfind(text2, "World") != string null) {
     say!("Найдено!")
 }
 
 const found = strfind(text2, "World")
-if (found != null) {
+if (found != string null) {
     say!("Найдено: ", found)
 }
 
 // Преобразование строки в число (Опасно! Если строка == строка то будет ошибка в runtime)
 const num = strtoint("123")       // 123
-(возвращает: -1: ошибка, число: всё нормально)
+(возвращает: int null: ошибка, число: всё нормально)
 
 // Конкатенация (старый способ, через ,)
 const name = "Андрей"
@@ -1015,7 +1058,6 @@ let greeting = "Привет, ", name   // "Привет, Андрей!"
 
 // Копирование строки
 const copy = name
-
 
 
 2. repeat (ПОВТОРЕНИЕ КОДА N РАЗ)
@@ -1093,7 +1135,6 @@ import "filename.cmm"
 ✅ Правильно (главный файл):
 
 // main.cmm
-lib <term>
 import "math.cmm"
 import "game.cmm"
 
@@ -1106,14 +1147,14 @@ fn main() {
 ✅ Правильно (библиотека):
 
 // math.cmm
-fn add(a, b) { return a + b }
-fn sub(a, b) { return a - b }
+fn add(const a: int, const b: int) { return a + b }
+fn sub(const a: int, const b: int) { return a - b }
 const PI = 3.14159
 
 ❌ Неправильно (в библиотеке не должно быть main()):
 
 // math.cmm  ❌ ОШИБКА!
-fn add(a: int, b: int) { return a + b }
+fn add(const a: int, const b: int) { return a + b }
 fn main() { say!("Hello") }   // ❌ main() только в main.cmm!
 
 
@@ -1124,16 +1165,13 @@ fn main() { say!("Hello") }   // ❌ main() только в main.cmm!
 3. Двойной импорт игнорируется (автоматическая защита)
 4. Все функции из импортированного файла попадают в глобальное пространство
 5. Если есть конфликт имён — ошибка компиляции
-6. lib <> подключает встроенные библиотеки с указанием версии
-7. Чтобы скомпилировать файл с import надо:
+6. Чтобы скомпилировать файл с import надо:
 gcmt -c main.cmm math.cmm program
 gcmt -r program
 
 
 6. ВРЕМЯ 
 =============================
-lib <time>
-- библеотека
 
 struct Time {
     seconds: int
@@ -1213,7 +1251,7 @@ fn main() {
 }
 
 Пример с потоками:
-fn loader() -> void {
+fn loader(var arg: void*) -> void* {
     for (i = 0, i <= 100, i++) {
         say!_work("progress", "Загрузка: ", i, "%")
         msleep(100)
@@ -1286,7 +1324,7 @@ value (x) {
 x: { ... }
 default: { ... }
 }
-(Возвращает: void*: -1 не чего не подошло, value переменной всё нормально)
+(Возвращает: void)
 - сравнивает значение переменной можно сделать сразу так:
 value (x) {
 x, y, ...: { ... }
@@ -1379,11 +1417,11 @@ let result = ADD(5 + 5, 5 + 5)
 // Превратится в 
 let result = (5 + 5) + (5 + 5)
 // 20
-REPEAT("say!(\"Hello\")\n say!(\"word\"", 5)
+REPEAT("say!(\"Hello\")\nsay!(\"word\"", 5)
 // Превратится в
 for (var i = 0, i < 5, i++) {
 say!("Hello")
- say!("world")
+say!("world")
 }
 
 ================================================================================
@@ -1403,17 +1441,17 @@ say!("Hello")
 
 Пример:
     const x = 10
-   const ptr *p: int = #x      // указатель *p указывает на x
+   const ptr *p: *int = #x      // указатель *p указывает на x
     say!(*p)             // 10
 
 Если так:
 const x = 10
-ptr *p = #x // ошибка! #x неизменяемый а ptr изменяемый
+ptr *p = #x // ошибка! x неизменяемый а ptr изменяемый
 
 Массив указателей:
 var x = 10
 var y = 20
-ptr *p[2] = [#x, #y] // тип = [int]
+ptr *p[2] = [#x, #y] // тип = [*int]
 
 
 Особенности:
@@ -1423,14 +1461,14 @@ ptr *p[2] = [#x, #y] // тип = [int]
     - ptr — встроенный тип
 
 Передача в функцию:
-    fn change(*p: ptr) {
+    fn change(ptr *p: *int) {
         *p = 42
     }
 
     fn main() {
         var a = 5
-        ptr *ptr = #a
-        change(ptr)
+        ptr *p = #a
+        change(*p)
         say!(a)   // 42
     }
 
@@ -1438,19 +1476,19 @@ ptr *p[2] = [#x, #y] // тип = [int]
 
 Синтаксис:
     var arr = [1, 2, 3, 4, 5]
-    ptr *ptr = #arr[0]   // указатель на первый элемент, тип = [int]
-
+    ptr *p = #arr   // указатель на целый массив, тип = *[int]
+    ptr *q = #arr[0] // указатель на элемент, тип = *int
 Арифметика указателей (3 способа):
 
 1. Смещение через +(int):
-    say!(*(ptr + 1))       // второй элемент (индекс 1)
+    say!(*(p + 1))       // второй элемент (индекс 1)
 
 2. Доступ по индексу (как в C):
-    say!(*ptr[i])          // доступ по индексу i
+    say!(*p[i])          // доступ по индексу i
 
 3. Сдвиг указателя (ptr++):
-    ptr++
-    say!(*ptr)             // второй элемент
+    p++
+    say!(*p)             // второй элемент
 
 Вот пример парсинга строки:
 var name = "Андрей"
@@ -1473,13 +1511,13 @@ say!(i, " буква: ", *p)
 13.3. NULL УКАЗАТЕЛИ
 
 Синтаксис:
-    ptr *ptr = null      // указатель пуст
+    ptr *p = *type null      // указатель пуст
 - если указатель пуст и ты пытаешься присвоить ему значение то будет ошибка
 Пример:
     fn main() {
-        ptr *ptr = null
+        ptr *p = *int null
         var x = 100
-        ptr = #x            // направляем на x
+        p = #x            // направляем на x
 
         if (ptr == null) {
             say!("указатель пуст")
@@ -1490,7 +1528,7 @@ say!(i, " буква: ", *p)
         }
     }
 Так нельзя:
-const ptr *p = null
+const ptr *p = *int null
 *p = 20
 
 Особенности:
@@ -1505,41 +1543,12 @@ const ptr *p = null
         let age: int
     }
 
-    const user = User{"Андрей", 10}
-    ptr *p = #user // тип = User
+    var user = User{"Андрей", 10}
+    ptr *p = #user // тип = *User
     say!(p->name)   // "Андрей"
 
 13.5 УКАЗАЛЕЛИ НА ФУНКЦИИ (funcptr)
-funcptr — отдельный тип для переменных (const, var, ptr, funcptr)
-Можно писать без # и с #
-
-fn add(a: int, b: int) -> int {
-return a + b
-}
-
-fn main() {
-funcptr *ptr(int, int) -> int = add // без # тип = int
-ptr(5, 5)
-}
-
-Пример № 2:
-fn calc(x: funcptr(int, int) -> int) {
-return x(5, 5)
-}
-
-fn add(a: int, b: int) -> int {
-return a + b
-}
-
-fn main() {
-calc(#add) // с #
-}
-
-Пример № 3:
-fn main() {
-funcptr *p(int, int) -> int[2] = [add, #sub, mul] // смешанно тип = [int]
-p[0](5, 5)
-}
+ПЕРЕРАБОТКА...
 
 
 14. ПРЕПРОЦЕССОР C--
@@ -1584,7 +1593,7 @@ say!("Да!")
 15. THREADS
 ================================================================================
 
-thread("id", Функция, Аргументы/NULL)
+thread("id", Функция, Аргументы/void* null)
 - создаёт поток
 (возвращает: 0: ошибка, 1: всё нормально)
 
@@ -1597,8 +1606,9 @@ thread_kill("id");
 (возвращает: 0: ошибка, 1: всё нормально)
 
 Пример:
-fn worker(arg: void*) -> void {
-    say!("Аргумент: ", arg)
+fn worker(const arg: void*) -> void {
+    const int_arg = (int)arg
+    say!("Аргумент: ", int_arg)
     thread_kill("arg")
 }
 
@@ -1611,6 +1621,11 @@ fn main() {
 Вывод:
 Аргумент: 42
 program end
+
+ВАЖНО:
+функция для потоков должна принимать все аргументы void* и должна возвращать void*
+Иначе предупреждение не ошибка!!!
+
 
 15.1. МЬЮТЕКСЫ
 =============================
@@ -1630,7 +1645,6 @@ mutex_destroy(x)
 - уничтожает мьютекс (обезательно для памяти)
 
 - пример (на словах):
-
 2 потока идут на одни данные
 Ты создаёшь мьютекс (замок)
 В функции для потока
@@ -1660,7 +1674,7 @@ term_icanon_on()
 - функция что включить ввод с Enter
 
 term_getch()
-- получает символ без Enter (сразу) (возвращает: null нету символов, != null (какой символ) есть символ)
+- получает символ без Enter (сразу) (возвращает: char null нету символов, != char null (какой символ) есть символ)
 
 term_goto(строка, колонке)
 - переместить курсор к строке и колонке
@@ -1736,7 +1750,7 @@ fn main() {
     term_icanon_off()
     while (true) {
         const c = term_getch()
-        if (c != null) {
+        if (c != char null) {
             say!("*")
         }
     }
@@ -1795,6 +1809,9 @@ close(sock/accept_sock)
 Просто напишите переменную с html кодом (обезательно с заголовками Content-Type, Content-Length)
 и потом киньте через send
 И заходите на https://localhost:вашпорт
+
+Факт № 2
+- SOCK_ALL = INADDR_ANY (C)
 ================================================================================
 =============================== C-- 1.2.5 =======================================
 ================================================================================
@@ -1803,7 +1820,7 @@ close(sock/accept_sock)
 mem_alloc(тип, размер)
 - выделяет память обезательно в переменной (возвращает: void* как и malloc в C) (обязательно в типе ptr)
 Пример:
-ptr *x = mem_alloc(int, 100)
+ptr *x = (int)mem_alloc(int, 100)
 - выделяет память на 100 int (400 БАЙТ)
 
 Заполнение:
@@ -1811,7 +1828,7 @@ for (i = 1, i < 100, i++) {
 x[i] = i * 10;
 }
 Пример 2:
-ptr *x = mem_alloc(string, 6)
+ptr *x = (string)mem_alloc(string, 6)
 - выделили память на 6 символов string
 x = "Hello"
 - заполнение
@@ -1820,7 +1837,7 @@ x = "Hello"
 Иначе утечка
 Защита от Double Free
 Если написать
-ptr *p = mem_alloc(int, 100)
+ptr *p = (int)mem_alloc(int, 100)
 mem_free(p)
 mem_free(p)
 
@@ -1871,12 +1888,12 @@ pwd()
 - выводит текущию директорию например: storage/emulated/0/mydir (возвращает: string)
 
 ls("путь")
-- выводит все файлы/папки
+- возвращает все файлы/папки
 Например: 
 1. file.cmm
 2. main.cmm
 и тд
- (возвращает: string)
+ (возвращает: string с \n)
 . = в текущей директории из cd
 
 dir_exists("путь")
@@ -1943,11 +1960,11 @@ default значение аргументов
 - default значение аргументам если они null
 
 Пример:
-fn greet(name: string default: "гость", age: int default: -1) {
+fn greet(const name: string default: "гость", const age: int default: -1) {
 say!("Привет ", name "тебе, ",  age, "лет")
 }
 
-greet(null, null)
+greet(string null, int null)
 Вывод: привет гость тебе -1 лет
 
 
@@ -1975,28 +1992,26 @@ list_t тип для list
 list_init(list, тип) инициализирует list с любым типом возвращает void
 list_next(list) переходит на слеюдущий элемент из аргументов (возвращает null когда аргументов не нашлось)
 Сохраняет аргумент в list
-list_all(куда сохранять) возвращает [void*] массив со всеми аргументами возвращает void
+list_all(type, куда сохранять) возвращает [type] массив со всеми аргументами возвращает void
 list_has_next(list) имеет ли list право на слеюдущий next возвращет bool
 
 И вот пример:
 fn print_all(first: void*, ...) -> void {
     const arg: list_t
     list_init(arg, void*)  // Указываем тип: void*
-    say!("Первый: ", first)
+    say!("Первый: ", (string)first)
     
     while (arg != null) {
         list_next(arg)
-        say!("Следующий: ", arg)
+        say!("Следующий: ", (string)arg)
     }
 }
 
 fn main() {
-    print_all("Hello", 1, 2, "World", "!", "C--")
+    print_all("Hello", "World", "!", "C--")
 }
 // Вывод:
 // Первый: Hello
-// Слеюдущий: 1
-// Слеюдущий: 2
 // Следующий: World
 // Следующий: !
 // Следующий: C--
