@@ -8,16 +8,6 @@ C-- ОФИЦИАЛЬНАЯ ДОКУМЕНТАЦИЯ 🐺
 Талисман: Волк
 ================================================================================
 0. ТИПЫ ДАННЫХ
-C-- ОФИЦИАЛЬНАЯ ДОКУМЕНТАЦИЯ 🐺
-================================================================================
-
-Версия: 1.0
-Автор: Андрей
-Философия: C На Стероидах
-Стандартная библиотека: ВСТРОЕНА В ТРАНСЛЯТОР!!!
-Талисман: Волк
-================================================================================
-0. ТИПЫ ДАННЫХ
 ================================================================================
 
 char          - 1 символ, пишется с '' (например: 'A', '9', '#')
@@ -32,17 +22,33 @@ bool       - логическое значение (true или false)
 type null             - пустое значение
 
 Примеры:
-    const letter = 'A'                // char
-    const name[10]: string = "Андрей"         // string с буфером 10
-    name[0] = 'B'                   // теперь "Bндрей"
-    const age = 10                    // int
-    const pi = 3.14159                // float
-    const flag = true                 // boolean
+    const letter = 'A'
+const name[7]: string = "Andrey"   // string, буфер 7 байт (6 + \0)
+name[0] = 'B'                       // теперь "Bndrey" ✅
+const age = 10
+const pi = 3.14159
+const flag = true
+
 // можно сравнивать строку по индексу:
-if (name[0] == 'В') {
-say!("первая буква: В")
+if (name[0] == 'B') {
+    say!("первая буква: B")
 }
 
+⚠️ Буфер строки указывается в БАЙТАХ, не в символах!
+   ASCII:  1 символ = 1 байт
+   UTF-8:  русская буква = 2 байта, эмодзи = 3-6 байт
+   Всегда +1 байт под '\0'
+
+   "Hello"   → нужно [6]
+   "Andrey"  → нужно [7]
+   "Андрей"  → нужно [13]
+
+   Индексация строки — побайтовая!
+   name[0] — первый БАЙТ, а не первый символ.
+   Для UTF-8 это может быть часть символа.
+
+   📌 В C-- 1.1 появится ustring — строка,
+      которая считает СИМВОЛЫ, а не байты.
 ================================================================================
 1. ПЕРЕМЕННЫЕ
 ================================================================================
@@ -64,7 +70,7 @@ char, string, int, float, bool
 Стрктуры и enum:
 name, [name]
 Специальные:
-void*, [void*], type null, type[null]
+void*, [void*], type null
 Для ptr (v1.2):
 *type, [*type], *[type], **type, *[*type], **[type]
 
@@ -85,8 +91,8 @@ const color: Color = Color.red
 const colors[2]: [Color] = [Color.red, Color.blue]
 const X: void* = (int)42
 const Void[3]: [void*] = [42, "Hello", 3.14] // при массивах будет ошибка нельзя
-const Null[500] = string null
-const Nulls[2] = string[null, null]
+const Null[500]: string = string null
+const Nulls[2]: string = [string null, string null]
 Nulls[0] = "Hello, "
 Nulls[1] = "World!"
 say!(Nulls[0], Nulls[1])
@@ -94,16 +100,18 @@ say!(Nulls[0], Nulls[1])
 const xmm[5]: [char] = ['H', 'h']
 В неинициализированых элементах будет содержаться мусор
 Больше про null:
-var nullable = string null
+var nullable[500] = string null
 nullable = "Hello"
 nullable = int null // ошибка компиляции типизация = статическая а не динамическая
 var nullable2 = int null
 nullbale2 = 42
 var nullable3 = float null
 nullable3 = 3.14 
-var nullable4: User null = User null
+var nullable4: User = User null
 nullable4 = User{"Андрей", 10, true}
-var nullable11[2]: string[null] = string[null, null]
+var nullable11[2]: [string] = [string null, string null]
+const Xnull: void* = void* null
+Xnull = (int)42
 
 Про типы ptr:
 const x: int = 10
@@ -141,13 +149,13 @@ const ptr *arr_impossible[2]: [**int] = [#p, #pp]
 const ptr *arr_impossble_two[2]: *[**int] = #arr_impossible
 
 // Null-указатель
-ptr *c: *int null = *int null
+ptr *c: *int = *int null
 
 // Null-указатель на указатель
-ptr *d: **int null = **int null
+ptr *d: **int = **int null
 
 // Массив null-указателей
-const ptr *f[2]: [*int] = [*int][null, null]
+const ptr *f[2]: [*int] = [[*int] null, [*int] null]
 ================================================================================
 2. РАБОТА СО СТРОКАМИ
 ================================================================================
@@ -178,7 +186,7 @@ say!("текст")                   - вывод С переносом стро
 say(expr1, expr2, ...)          - вывод нескольких выражений
 say!(expr1, expr2, ...)         - вывод нескольких выражений с переносом
 fatal("сообщение")          - 
-вывод строки и завершение программы
+вывод строки и завершение программы (возвращает: void)
 
 
 input(var, тип)                 - ввод с проверкой типа
@@ -191,7 +199,7 @@ cls()                           - очищает экран
 Типы для input: string, char, int, float, bool
 
 Примеры:
-    var name = string null
+    var name[500] = string null
     input(name, string)           // Ввод строки
     
     var age = int null
@@ -202,13 +210,13 @@ fatal("ошибка: нужно ввести число")
 
 
     // Множественный вывод (Конкантенция)
-const name = "Артём"
+const name[] = "Артём"
 const age = 10
 say!("Привет, ", name, ", Тебе, ", age, "лет")
 // Привет, Артём, Тебе, 10 лет
 say!("Андрей, ", true, 1, 3.14, user.name)
 // Любой Тип
-const greet = "Привет, ", name
+const greet[] = "Привет, ", name
 say!(greet)
 // в переменных!!!
 say!(age + 1) // 11
@@ -251,7 +259,7 @@ write_file("file.txt") {         - перезаписать файл
 }
 (возвращает: 0: ошибка, 1: всё нормально)
 
-const content = read_file("file.txt")  - прочитать весь файл
+const content[] = read_file("file.txt")  - прочитать весь файл
 (возвращает: == string null: ошибка, != string null: всё нормально)
 
 if (!file_exists("file.txt")) {                - проверка существования файла
@@ -295,7 +303,7 @@ add_to_file("file", "работает")
     }
     
     // Чтение
-    const content = read_file("notes.txt")
+    const content[] = read_file("notes.txt")
     if (content == string null) {
         fatal("Ошибка чтения!")
     }
@@ -534,7 +542,7 @@ C {
 
 Пример:
     fn main() {
-        const name = "Андрей"
+        const name[] = "Андрей"
         const age = 10
         
         C {
@@ -563,7 +571,7 @@ REASON: причина
 1. Null Variable
    Переменная может существовать без значения.
    
-   const name = string null                   // Null Variable
+   var name[500] = string null                   // Null Variable
    input(name, string)            // теперь name = "Андрей"
 ================================================================================
 15. Компилятор: GCMT
@@ -772,11 +780,11 @@ say!(me.name)
 
 18.1. МАССИВЫ СТРУКТУР
 =============================
-const/var arr[размер] = null
+const/var arr[размер] = [struct null, struct null, ...]
 - создание пустого массива структур
 
 const/var arr[размер] = [
-struct{поля}
+struct{поля},
 struct{поля}
 ]
 - создания массива структур с элементами
@@ -801,7 +809,7 @@ const value: string[]
 const next: AST
 }
 
-const ASTNode = AST{NODE_PLUS, "+", AST{NODE_MINUS, "-", AST{NODE_STAR, "*", AST{NODE_WAND, "/", null}}}}
+const ASTNode = AST{NODE_PLUS, "+", AST{NODE_MINUS, "-", AST{NODE_STAR, "*", AST{NODE_WAND, "/", AST null}}}}
 
 say!(ASTNode.value) // "+"
 say!(ASTNode.next.value) // "-"
@@ -836,19 +844,20 @@ say!(ASTNode.next.next.next.value) // "/"
 ================================================================================
 20. NULL Аргументы
 ================================================================================
-fn greet(name: string) {
-if (name == null) {
-return "Привет, гость"
+fn greet(const name: string) -> string {
+    if (name == string null) {
+        return "Hello, guest"
+    }
+    else {
+        const greeting[] = "Hello, ", name
+        return greeting
 }
-else {
-return "Привет, ", name
+
+fn main() {
+    const x = greet(string null)
+    say!(x)
+    // вывод: Hello, guest
 }
- }
- fn main() {
- const x = greet(string null)
- say!(x)
- - вывод: Привет, гость
- }
 ================================================================================
 21. ПОЛНЫЙ ПРИМЕР
 ================================================================================
@@ -856,8 +865,8 @@ return "Привет, ", name
 // Программа: список дел
 
 fn main() {
-    var task
-    var choice
+    var task[500] = string null
+    var choice = int null
     
     while (true) {
         say!("\n===== СПИСОК ДЕЛ =====")
@@ -868,7 +877,7 @@ fn main() {
         input(choice, int)
         
         if (choice == 1) {
-            const tasks = read_file("tasks.txt")
+            const tasks[] = read_file("tasks.txt")
             if (tasks == string null) {
                 say!("Ошибка при чтении файла!")
             } else {
@@ -1032,7 +1041,7 @@ const result = strfind(text2, "World")   // result = "World"
 say!(result)                           // World
 
 // Если не найдено — null
-const result2 = strfind(text2, "Mars")   // result2 = null
+const result2 = strfind(text2, "Mars")   // result2 = string null
 
 // strfind_pos(x) возращает позицию
 const pos = strfind_pos(text2, "Mars")
@@ -1053,8 +1062,8 @@ const num = strtoint("123")       // 123
 (возвращает: int null: ошибка, число: всё нормально)
 
 // Конкатенация (старый способ, через ,)
-const name = "Андрей"
-let greeting = "Привет, ", name   // "Привет, Андрей!"
+const name[] = "Андрей"
+const greeting[] = "Привет, ", name   // "Привет, Андрей!"
 
 // Копирование строки
 const copy = name
@@ -1067,8 +1076,8 @@ repeat(5) {
     say!("Hello")
 }
 
-say!("Hello".repeat(5))
-// Вывод: HelloHelloHelloHelloHello
+say!("Hello ".repeat(5))
+// Вывод: Hello Hello Hello Hello  Hello
 
 3. typeof / sizeof
 ================================================================================
@@ -1204,13 +1213,13 @@ say!(x.hours)
 
 
 6.1. ТАЙМЕР
-const/var x = timer_create(sec)
+var x = timer_create(sec)
 - создание таймера
 (возвращает: void)
 
 timer_done(x)
 - опеределяет закончился ли таймер?
-(возвращает: boolean)
+(возвращает: bool)
 
 timer_wait(x)
 - программа застывает пока таймер не закончится (можно без)
@@ -1260,7 +1269,7 @@ fn loader(var arg: void*) -> void* {
 }
 
 fn main() {
-    thread("load", loader, null)
+    thread("load", loader, void* null)
     thread_wait("load")
 }
 
@@ -1277,7 +1286,7 @@ line(n)
 
 Например:
 say!("я на первой строке")
-line(3)
+line(2)
 say!("я на четвёртой")
 
 Вывод:
@@ -1413,11 +1422,11 @@ code
 }
  }
 
-let result = ADD(5 + 5, 5 + 5)
+const result = ADD(5 + 5, 5 + 5)
 // Превратится в 
-let result = (5 + 5) + (5 + 5)
+const result = (5 + 5) + (5 + 5)
 // 20
-REPEAT("say!(\"Hello\")\nsay!(\"word\"", 5)
+REPEAT("say!(\"Hello\")\nsay!(\"world\")", 5)
 // Превратится в
 for (var i = 0, i < 5, i++) {
 say!("Hello")
@@ -1493,7 +1502,7 @@ ptr *p[2] = [#x, #y] // тип = [*int]
 Вот пример парсинга строки:
 var name = "Андрей"
 ptr *p = #name
-let i = 1
+var i = 1
 while (*p != '\0') {
 i++
 p++
@@ -1519,11 +1528,11 @@ say!(i, " буква: ", *p)
         var x = 100
         p = #x            // направляем на x
 
-        if (ptr == null) {
+        if (ptr == *int null) {
             say!("указатель пуст")
         }
 
-        if (ptr != null) {
+        if (ptr != *int null) {
             say!("указатель не пуст")
         }
     }
@@ -1539,12 +1548,12 @@ const ptr *p = *int null
 13.4. УКАЗАТЕЛИ НА СТРУКТУРЫ (->)
 
     struct User {
-        let name: string
-        let age: int
+        const name: string
+        const age: int
     }
 
-    var user = User{"Андрей", 10}
-    ptr *p = #user // тип = *User
+    const user = User{"Андрей", 10}
+    const ptr *p = #user // тип = *User
     say!(p->name)   // "Андрей"
 
 13.5 УКАЗАЛЕЛИ НА ФУНКЦИИ (funcptr)
@@ -1921,8 +1930,8 @@ to_string(arr)
 
 Пример:
 fn main() {
-let arr = [1, 2, 3, 4, 5]
-let mix_arr = mix(arr)
+const arr[] = [1, 2, 3, 4, 5]
+const mix_arr[] = mix(arr)
 say!(mix_arr) // рандомно (предсказать не возможно)
 say!(reverse(arr)) // 5, 4, 3, 2, 1
 }
@@ -1937,12 +1946,12 @@ inputm(переменная, тип)
 // до enter
 // возвращает: 0: неправильный тип, 1: всё нормально
 
-const name[500]
+var name[500]: string = string null
 inputm(name, string)
 - Ввод: Андрей Лессер\n
 - В name: Андрей Лессер
 Без inputm было бы:
-name = "Андрей"
+name = "Андрей" // читает до enter без пробелов
 
 22. УЛУЧШЕНИЕ ФАЙЛОВ
 ================================================================================
@@ -1961,7 +1970,7 @@ default значение аргументов
 
 Пример:
 fn greet(const name: string default: "гость", const age: int default: -1) {
-say!("Привет ", name "тебе, ",  age, "лет")
+say!("Привет ", name, "тебе, ",  age, "лет")
 }
 
 greet(string null, int null)
@@ -1990,9 +1999,8 @@ say!("Тик")
 ... Ключевое слово для объявления в аргументах
 list_t тип для list
 list_init(list, тип) инициализирует list с любым типом возвращает void
-list_next(list) переходит на слеюдущий элемент из аргументов (возвращает null когда аргументов не нашлось)
-Сохраняет аргумент в list
-list_all(type, куда сохранять) возвращает [type] массив со всеми аргументами возвращает void
+list_next(list) переходит на слеюдущий элемент из аргументов
+Сохраняет аргумент в list возвращает void
 list_has_next(list) имеет ли list право на слеюдущий next возвращет bool
 
 И вот пример:
@@ -2001,7 +2009,7 @@ fn print_all(first: void*, ...) -> void {
     list_init(arg, void*)  // Указываем тип: void*
     say!("Первый: ", (string)first)
     
-    while (arg != null) {
+    while (list_has_next(arg)) {
         list_next(arg)
         say!("Следующий: ", (string)arg)
     }
