@@ -1,4 +1,9 @@
-# C--
+
+<p align="center">
+  <img src="assets/logo.jpeg" alt="C-- logo" width="220">
+</p>
+
+## C--
 
 The C-- Programming language.
 
