@@ -53,3 +53,12 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# C-- translator output
+output.c
+program
+*.cmm.c
+
+# Termux/editor temp
+*.swp
+*~
