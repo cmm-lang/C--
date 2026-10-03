@@ -1,15 +1,15 @@
 #!/bin/bash
 # ============================================================
-#  CLANG MAX WARNINGS — критические + важные
-#  Не используем -Weverything (слишком много мусора)
-#  Только то, что РЕАЛЬНО важно
+#  CLANG MAX WARNINGS — strict but practical
+#  No -Weverything (too much noise)
+#  No -Wpadded, no -Wsign-conversion (pure noise for this code)
 # ============================================================
 
 FILE="$1"
 OUT="${2:-program}"
 
 if [ -z "$FILE" ]; then
-    echo "Использование: $0 file.c [output]"
+    echo "Usage: $0 <file.c> [output]"
     exit 1
 fi
 
@@ -17,74 +17,87 @@ clang \
     -std=c11 \
     -O2 \
     \
-    `# === БАЗОВЫЕ ===` \
+    `# === BASELINE ===` \
     -Wall \
     -Wextra \
     -Wpedantic \
     \
-    `# === ПЕРЕМЕННЫЕ ===` \
-    -Wuninitialized \
+    `# === UNUSED / DEAD CODE ===` \
     -Wunused-variable \
     -Wunused-parameter \
     -Wunused-function \
     -Wunused-value \
-    -Wunused-macros \
     -Wunused-label \
     -Wunused-local-typedef \
     -Wunused-but-set-variable \
-    -Wshadow \
-    -Wshadow-field \
-    -Wshadow-uncaptured-local \
     -Wunreachable-code \
     \
-    `# === ТИПЫ ===` \
+    `# === SHADOWING ===` \
+    -Wshadow \
+    -Wshadow-field \
+    \
+    `# === INITIALIZATION ===` \
+    -Wuninitialized \
+    -Wconditional-uninitialized \
+    -Wsometimes-uninitialized \
+    \
+    `# === TYPES ===` \
     -Wconversion \
-    -Wsign-conversion \
-    -Wsign-compare \
     -Wimplicit-int-conversion \
     -Wimplicit-float-conversion \
+    -Wimplicit-const-int-float-conversion \
     -Wshorten-64-to-32 \
     -Wconstant-conversion \
     -Wint-conversion \
     -Wpointer-sign \
     -Wpointer-to-int-cast \
     -Wint-to-pointer-cast \
+    -Wint-to-void-pointer-cast \
     -Wenum-conversion \
+    -Wbool-conversion \
+    -Wbool-operation \
     \
-    `# === УКАЗАТЕЛИ И ПАМЯТЬ ===` \
+    `# === POINTERS / MEMORY ===` \
     -Wpointer-arith \
     -Wnull-dereference \
     -Wnull-pointer-arithmetic \
+    -Wcast-align \
+    -Wcast-qual \
+    -Wstrict-aliasing \
+    -Wsizeof-array-div \
+    -Wsizeof-pointer-div \
+    -Wsizeof-pointer-memaccess \
+    -Warray-bounds \
+    \
+    `# === FORMAT STRINGS ===` \
     -Wformat \
     -Wformat-security \
     -Wformat-nonliteral \
     -Wformat-overflow \
     -Wformat-truncation \
-    -Wstrlcpy-strlcat-size \
     \
-    `# === ФУНКЦИИ ===` \
+    `# === FUNCTIONS ===` \
     -Wmissing-prototypes \
     -Wmissing-variable-declarations \
     -Wmissing-noreturn \
+    -Wmissing-braces \
     -Wreturn-type \
     -Wreturn-stack-address \
-    -Wmissing-braces \
     -Wstrict-prototypes \
     -Wold-style-definition \
     -Wmain \
     \
-    `# === СТРУКТУРЫ ===` \
-    -Wpadded \
+    `# === STRUCTURES ===` \
     -Wpacked \
     -Wmissing-field-initializers \
     \
-    `# === СТРОКИ ===` \
+    `# === STRINGS ===` \
     -Wwritable-strings \
     -Wstring-concatenation \
     -Wstring-compare \
     -Wstring-plus-int \
     \
-    `# === ЛОГИКА ===` \
+    `# === LOGIC / COMPARISONS ===` \
     -Wparentheses \
     -Wmisleading-indentation \
     -Wlogical-op-parentheses \
@@ -92,47 +105,51 @@ clang \
     -Wtautological-compare \
     -Wtautological-constant-out-of-range-compare \
     -Wtautological-pointer-compare \
-    -Wbool-conversion \
-    -Wbool-operation \
     -Wshift-op-parentheses \
     -Wbitwise-op-parentheses \
+    -Wshift-count-overflow \
     -Wdangling-else \
     -Wempty-body \
     -Wimplicit-fallthrough \
-    -Wswitch \
-    -Wswitch-enum \
-    -Wswitch-default \
-    -Wcovered-switch-default \
+    -Wcomma \
     \
-    `# === ЦИКЛЫ ===` \
+    `# === SWITCH ===` \
+    -Wswitch \
+    -Wswitch-default \
+    -Wswitch-bool \
+    -Wduplicate-enum \
+    \
+    `# === LOOPS ===` \
     -Wfor-loop-analysis \
     -Wloop-analysis \
     \
-    `# === МНОГОПОТОЧНОСТЬ ===` \
-    -Wthread-safety \
-    \
-    `# === ПРЕПРОЦЕССОР ===` \
+    `# === PREPROCESSOR ===` \
     -Wundef \
     -Wmacro-redefined \
     -Wexpansion-to-defined \
+    -Wheader-guard \
+    -Wpragma-once-outside-header \
     \
-    `# === БЕЗОПАСНОСТЬ ===` \
-    -Wcast-align \
-    -Wcast-qual \
-    -Wconditional-uninitialized \
+    `# === MISC ===` \
+    -Wvla \
     -Wdeprecated \
     -Wdeprecated-implementations \
-    -Wdocumentation \
-    -Wstrict-aliasing \
     \
-    `# === ОШИБКИ, А НЕ WARNINGS ===` \
+    `# === PROMOTE TO ERRORS (critical) ===` \
     -Werror=return-type \
     -Werror=implicit-function-declaration \
     -Werror=incompatible-pointer-types \
     -Werror=implicit-int \
     -Werror=int-conversion \
     -Werror=uninitialized \
+    -Werror=sizeof-pointer-memaccess \
     \
     "$FILE" -o "$OUT"
 
-echo "Скомпилировано: $OUT"
+RC=$?
+if [ $RC -eq 0 ]; then
+    echo "✅ Compiled: $OUT"
+else
+    echo "❌ Compilation failed"
+    exit $RC
+fi
