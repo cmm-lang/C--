@@ -27,4 +27,4 @@ fn main() {
 ## docs
 - [Documentation (Russian)](docs/ru/documentation.txt)
 - [Ideas Archive (Russian)](docs/ru/archive.txt)
-- English — *SOON*
+- **English** — **SOON**
