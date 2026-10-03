@@ -5869,16 +5869,6 @@ else if (node->left && node->left->type == NODE_NULL) {
         translate_expression(node->left, out);
         fprintf(out, ";\n");
         }
-        
-
-        Node* elem = node->left->body;
-        int count = 0;
-        while (elem) {
-            count++;
-            elem = elem->next;
-        }
-        indent(out, depth);
-    }
     // ============================================================
     //  7. REGULAR DECLARATION:  var x = 10
     // ============================================================
