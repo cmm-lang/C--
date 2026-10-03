@@ -25,5 +25,6 @@ fn main() {
 ```
 
 ## docs
-[https://docs/ru/documentation.txt]
-[https://docs/ru/archive.txt]
+- [Documentation (Russian)](docs/ru/documentation.txt)
+- [Ideas Archive (Russian)](docs/ru/archive.txt)
+- English — *SOON*
