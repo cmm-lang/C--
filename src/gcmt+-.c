@@ -5869,6 +5869,7 @@ else if (node->left && node->left->type == NODE_NULL) {
         translate_expression(node->left, out);
         fprintf(out, ";\n");
         }
+	}
     // ============================================================
     //  7. REGULAR DECLARATION:  var x = 10
     // ============================================================
