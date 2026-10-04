@@ -5869,7 +5869,7 @@ else if (node->left && node->left->type == NODE_NULL) {
         translate_expression(node->left, out);
         fprintf(out, ";\n");
         }
-	}
+    }
     // ============================================================
     //  7. REGULAR DECLARATION:  var x = 10
     // ============================================================
@@ -5915,6 +5915,8 @@ else if (node->left && node->left->type == NODE_NULL) {
         
         case NODE_CREATE_FILE: {
             indent(out, depth);
+            fprintf(out, "{\n");
+            indent(out, depth);
             fprintf(out, "FILE* fp = fopen(\"%s\", \"wx\");\n", node->value);
             indent(out, depth);
             fprintf(out, "if (fp) {\n");
@@ -5933,10 +5935,14 @@ else if (node->left && node->left->type == NODE_NULL) {
             fprintf(out, "    perror(\"file\");\n");
             indent(out, depth);
             fprintf(out, "}\n");
+            indent(out, depth);
+            fprintf(out, "}\n");
             break;
         }
 
         case NODE_APPEND_FILE: {
+        	indent(out, depth);
+            fprintf(out, "{\n");
             indent(out, depth);
             fprintf(out, "FILE* fp = fopen(\"%s\", \"a\");\n", node->value);
             indent(out, depth);
@@ -5956,10 +5962,14 @@ else if (node->left && node->left->type == NODE_NULL) {
             fprintf(out, "    perror(\"file\");\n");
             indent(out, depth);
             fprintf(out, "}\n");
+            indent(out, depth);
+            fprintf(out, "}\n");
             break;
         }
 
         case NODE_WRITE_FILE: {
+        	indent(out, depth);
+            fprintf(out, "{\n");
             indent(out, depth);
             fprintf(out, "FILE* fp = fopen(\"%s\", \"w\");\n", node->value);
             indent(out, depth);
@@ -5977,6 +5987,8 @@ else if (node->left && node->left->type == NODE_NULL) {
             fprintf(out, "} else {\n");
             indent(out, depth);
             fprintf(out, "    perror(\"file\");\n");
+            indent(out, depth);
+            fprintf(out, "}\n");
             indent(out, depth);
             fprintf(out, "}\n");
             break;
