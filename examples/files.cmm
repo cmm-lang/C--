@@ -1,0 +1,42 @@
+// files.cmm — file I/O demo (GCMT+- supported subset)
+
+fn main() {
+    say!("=== C-- file demo ===")
+    say!("")
+
+    // 1. create_file — creates a new file (fails if exists)
+    say!("1. Creating ", "demo.txt", " ...")
+create_file("demo.txt") {
+        fsay!("First line")
+        fsay!("Second line")
+    }
+
+    // 2. append_file — appends (old content stays)
+    say!("2. Appending ...")
+append_file("demo.txt") {
+        fsay!("Third line (append)")
+    }
+
+    // 3. read_file — reads whole file
+    say!("3. Reading:")
+    say!("---")
+    const text[] = read_file("demo.txt")
+
+    say(text)
+    say!("---")
+
+    // 4. write_file — overwrites (old content is lost)
+    say!("4. Overwriting ...") write_file("demo.txt") {
+        fsay!("NEW CONTENT")
+    }
+
+    // 5. read again
+    say!("5. After overwrite:")
+    say!("---")
+    const text2[] = read_file("demo.txt")
+
+    say(text2)
+    say!("---")
+
+    say!("=== Done ===")
+}
