@@ -30,6 +30,6 @@ fn main() {
 ```
 
 ## docs
-- [Documentation (Russian)](docs/ru/documentation.txt)
-- [Ideas Archive (Russian)](docs/ru/archive.txt)
+- [Documentation (Russian)](docs/documentation.txt)
+- [Ideas Archive (Russian)](docs/archive.txt)
 - **English** — **SOON**
